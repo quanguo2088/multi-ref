@@ -81,17 +81,17 @@ The following tools and dependencies are required:
 │    ├── NLDPC_R05_configure                    // Decoding configuration files (R = 0.5)
 │    ├── sliding_correlation.c                  // Performs sliding correlation with watermark reference
 │    ├── align_bits.cpp                         // Aligns reads to regenerative reference at the bit level
-│    ├── dec_result_feedback.cpp	              // Refines soft decoding results with feedback
-│    ├── get_reads_bits.c	                      // Converts read sequences into dual-layer A/T base strings
+│    ├── dec_result_feedback.cpp                // Refines soft decoding results with feedback
+│    ├── get_reads_bits.c                       // Converts read sequences into dual-layer A/T base strings
 │    ├── get_ref_bits.c                         // Converts regenerative reference into dual-layer A/T base strings
 │    ├── getthre.c	                            // Extracts peak values for adaptive thresholding
-│    ├── lowthres_pthread_edlib.c	              // Aligns reads to scaffold reference
+│    ├── lowthres_pthread_edlib.c               // Aligns reads to scaffold reference
 │    ├── majorityvoting.c                       // Builds scaffold sequence via base-wise majority voting
 │    ├── post_dec_hamming_dis.c	                // Calculates Hamming distance
 │    ├── R1_2_indel_correct	                    // Forward-backward algorithm for indel correction (R = 0.5)
 │    ├── R5_6_indel_correct                     // Forward-backward algorithm for indel correction (R = 0.83)
-│    ├── R1_2_multi-read_merging	              // Merges symbol probabilities to compute consensus soft information (R = 0.5)
-│    ├── R5_6_multi-read_merging	              // Merges symbol probabilities to compute consensus soft information (R = 0.83)
+│    ├── R1_2_multi-read_merging                // Merges symbol probabilities to compute consensus soft information (R = 0.5)
+│    ├── R5_6_multi-read_merging                // Merges symbol probabilities to compute consensus soft information (R = 0.83)
 │    ├── NLDPC_R1_2_soft_decoder                // Non-binary LDPC soft-decision decoder (R = 0.5)
 │    ├── LDPC_R5_6_soft_decoder                 // Binary LDPC soft-decision decoder (R = 0.83)
 
