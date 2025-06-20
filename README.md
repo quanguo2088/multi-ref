@@ -9,7 +9,6 @@
   - [Overview](#overview)
   - [Requirements](#requirements)
   - [Kit Tree Diagram](#kit-tree-diagram)
-  - [Modules](#modules)
   - [Example of usage](#example-of-usage)
     - [1. R0.67\_fast\_recovery](#1-r067_fast_recovery)
     - [2. R0.83\_bootstrap\_recovery](#2-r083_bootstrap_recovery)
@@ -106,13 +105,6 @@ The following tools and dependencies are required:
 
 ```
 
-## Modules
-
-| Program                     | Input                                                                                                                                                  | Output                                                                                                                                                                                                                                                               |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| R0.67_fast_recovery.sh      | DNA-40.5Kb-EM-SE150_1.fastq<br />SequenceLengthALL_FILE001R0667<br />original_seq-EM.txt<br />source_bit.txt<br />permutation64800                     | correlation_result.txt<br />err_of_dec_result.txt<br />recovery_bitstream.txt<br />recovery_image.jpg                                                                                                                                                                |
-| R0.83_bootstrap_recovery.sh | DNA-40.5Kb-MC_Sim.fastq<br />SequenceL81000NoPeriodOnly2ndFILE<br />encoded_bit.txt<br />original_seq-MC.txt<br />source_bit.txt<br />permutation64800 | correlation_result.txt<br />Type-I_reads.txt<br />Type-II_reads.txt<br />Type-III_reads.txt<br />scaffold_ref.txt<br />dec_result.txt<br />soft_infor.txt<br />symbol_probability.txt<br />err_of_dec_result.txt<br />recovery_bitstream.txt<br />recovery_image.jpg |
-
 ## Example of usage
 
 ### 1. R0.67_fast_recovery
@@ -137,6 +129,14 @@ The following tools and dependencies are required:
 - **err_of_dec_result.txt**: Result of substitution error between the decoded binary bits and the source bitstream, with two columns indicating the error count and error rate, respectively.
 - **recovery_bitstream.txt**: Decoded binary data bitstream with a length of 43,200 bits.
 - **recovery_image.jpg**: Original image of the decoded output.
+
+**To run fast recovery for the 1/2 code rate (DNA-40.32Kb-ER), use the following command:**
+
+```bash
+./R0.5_fast_recovery.sh
+```
+
+The input and output files follow the same format as above.
 
 ---
 
@@ -170,6 +170,16 @@ The following tools and dependencies are required:
 - **err_of_dec_result.txt**: Result of substitution error between the decoded binary bits and the source bitstream, with two columns indicating the error count and error rate, respectively.
 - **recovery_bitstream.txt**: Decoded binary data bitstream with a length of 54,000 bits.
 - **recovery_image.jpg**: Original image of the decoded output.
+
+**To run fast recovery for the 1/2 code rate (DNA-40.32Kb-ER), use the following command:**
+
+```bash
+./R0.5_bootstrap_recovery.sh
+```
+
+The input and output files follow the same format as above.
+
+---
 
 ## Note
 
