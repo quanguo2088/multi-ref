@@ -66,37 +66,41 @@ The following tools and dependencies are required:
 │    ├──  ├──original_seq-MC.txt      // Encoded payload sequence
 │    ├──  ├──SequenceL81000NoPeriodOnly2ndFILE// Watermark sequence
 │    ├──  ├──encoded_bit.txt          // Encoded bit sequence
+
 ├── fast_recovery                     // Fast recovery module
-│    ├── edlib                        // Edlib alignment software library
-│    ├── NLDPC_R05_configure          // Decoding configuration folder(R=0.5)
-│    ├── sliding_correlation.c        // Program for sliding correlation
-│    ├── bit-wise_consensus_recovery.c// Program for bit-wise consensus recovery
-│    ├── post_dec_hamming_dis.c       // Program for sub. errors calculation
-│    ├── NLDPC_R1_2_soft_decoder      // Program for NB-LDPC decoding(R=0.5)
-│    ├── LDPC_R2_3_soft_decoder       // Program for LDPC decoding(R=0.67)
+│    ├── edlib                        // Edlib alignment library (dependency)
+│    ├── NLDPC_R05_configure          // Decoding configuration files (R = 0.5)
+│    ├── sliding_correlation.c        // Performs sliding correlation with watermark reference
+│    ├── bit-wise_consensus_recovery.c// Generates consensus bitstream from aligned reads
+│    ├── post_dec_hamming_dis.c       // Calculates Hamming distance
+│    ├── NLDPC_R1_2_soft_decoder      // Non-binary LDPC soft-decision decoder (R = 0.5)
+│    ├── LDPC_R2_3_soft_decoder       // Binary LDPC soft-decision decoder (R = 0.67)
+
 ├── bootstrap_recovery                // Bootstrap recovery module
-│    ├── edlib                        // Edlib alignment software library
-│    ├── NLDPC_R05_configure          // Decoding configuration folder(R=0.5)
-│    ├── sliding_correlation.c        // Program for sliding correlation
-│    ├── align_bits.cpp               // Program for sequence alignment
-│    ├── dec_result_feedback.cpp	  // Program for decoding result feedback
-│    ├── get_reads_bits.c	          // Converts reads into two-layer bit sequences and maps each layer back to A/T using 0→A and 1→T.
-│    ├── get_ref_bits.c               // Program for regenerative ref. demapping
-│    ├── getthre.c	                  // Program for peak value splitting 
-│    ├── lowthres_pthread_edlib.c	  // Program for scaffold ref. alignment
-│    ├── majorityvoting.c             // Program for majority voting
-│    ├── post_dec_hamming_dis.c	      // Program for hamming distance calculation
-│    ├── R1_2_indel_correct	          // Program for FB algorithm(R=0.5)
-│    ├── R5_6_indel_correct           // Program for FB algorithm(R=0.83)
-│    ├── R1_2_multi-read_merging	  // Program for soft inf. combination(R=0.5)
-│    ├── R5_6_multi-read_merging	  // Program for soft inf. combination(R=0.83)
-│    ├── NLDPC_R1_2_soft_decoder      // Program for NB-LDPC decoding(R=0.5)
-│    ├── LDPC_R5_6_soft_decoder       // Program for LDPC decoding(R=0.83)
-├── R0.5_fast_recovery.sh             // Run fast recovery script(R=0.5)
-├── R0.67_fast_recovery.sh            // Run fast recovery script(R=0.67)
-├── R0.5_bootstrap_recovery.sh        // Run bootstrap recovery script(R=0.5)
-├── R0.83_bootstrap_recovery.sh       // Run bootstrap recovery script(R=0.83)
-├── README.md                         // Description document of kit
+│    ├── edlib                        // Edlib alignment library (dependency)
+│    ├── NLDPC_R05_configure          // Decoding configuration files (R = 0.5)
+│    ├── sliding_correlation.c        // Performs sliding correlation with watermark reference
+│    ├── align_bits.cpp               // Aligns reads to regenerative reference at the bit level
+│    ├── dec_result_feedback.cpp	  // Refines soft decoding results with feedback
+│    ├── get_reads_bits.c	          // Converts read sequences into dual-layer A/T base strings
+│    ├── get_ref_bits.c               // Converts regenerative reference into dual-layer A/T base strings
+│    ├── getthre.c	                  // Extracts peak values for adaptive thresholding
+│    ├── lowthres_pthread_edlib.c	  // Aligns reads to scaffold reference
+│    ├── majorityvoting.c             // Builds scaffold sequence via base-wise majority voting
+│    ├── post_dec_hamming_dis.c	      // Calculates Hamming distance
+│    ├── R1_2_indel_correct	          // Forward-backward algorithm for indel correction (R = 0.5)
+│    ├── R5_6_indel_correct           // Forward-backward algorithm for indel correction (R = 0.83)
+│    ├── R1_2_multi-read_merging	  // Merges symbol probabilities to compute consensus soft information (R = 0.5)
+│    ├── R5_6_multi-read_merging	  // Merges symbol probabilities to compute consensus soft information (R = 0.83)
+│    ├── NLDPC_R1_2_soft_decoder      // Non-binary LDPC soft-decision decoder (R = 0.5)
+│    ├── LDPC_R5_6_soft_decoder       // Binary LDPC soft-decision decoder (R = 0.83)
+
+├── R0.5_fast_recovery.sh             // Shell script to run fast recovery (R = 0.5)
+├── R0.67_fast_recovery.sh            // Shell script to run fast recovery (R = 0.67)
+├── R0.5_bootstrap_recovery.sh        // Shell script to run bootstrap recovery (R = 0.5)
+├── R0.83_bootstrap_recovery.sh       // Shell script to run bootstrap recovery (R = 0.83)
+├── README.md                         // Documentation for the toolkit
+
 ```
 
 ## Modules
