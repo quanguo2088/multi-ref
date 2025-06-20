@@ -46,60 +46,60 @@ The following tools and dependencies are required:
 
 ```html
 
-├── data                              // Data module
+├── data                                        // Data module
 │    ├── R0.5
-│    ├──  ├──sourceBITearth4KB4032.txt// Original binary bitstream
-│    ├──  ├──DNA-40.32Kb-ER_Sim.fastq // ART simulation data
-│    ├──  ├──DNA-40.32Kb-ER_SE150.fastq  // Sequencing data
-│    ├──  ├──original_seq-ER.txt      // Encoded payload sequence
-│    ├──  ├──sequenceL80640NoPeriod2FILE// Watermark sequence
-│    ├──  ├──encoded_bit.txt          // Encoded bit sequence
+│    ├──  ├──sourceBITearth4KB4032.txt          // Original binary bitstream
+│    ├──  ├──DNA-40.32Kb-ER_Sim.fastq           // ART simulation data
+│    ├──  ├──DNA-40.32Kb-ER_SE150.fastq         // Sequencing data
+│    ├──  ├──original_seq-ER.txt                // Encoded payload sequence
+│    ├──  ├──sequenceL80640NoPeriod2FILE        // Watermark sequence
+│    ├──  ├──encoded_bit.txt                    // Encoded bit sequence
 │    ├── R0.67
-│    ├──  ├──source_bit.txt           // Original binary bitstream
-│    ├──  ├──DNA-40.5Kb-EM_SE150.fastq   // Sequencing data
-│    ├──  ├──original_seq-EM.txt      // Encoded payload sequence
-│    ├──  ├──SequenceLengthALL_FILE001R0667// Watermark sequence
-│    ├──  ├──encoded_bit.txt          // Encoded bit sequence
+│    ├──  ├──source_bit.txt                     // Original binary bitstream
+│    ├──  ├──DNA-40.5Kb-EM_SE150.fastq          // Sequencing data
+│    ├──  ├──original_seq-EM.txt                // Encoded payload sequence
+│    ├──  ├──SequenceLengthALL_FILE001R0667     // Watermark sequence
+│    ├──  ├──encoded_bit.txt                    // Encoded bit sequence
 │    ├── R0.83
-│    ├──  ├──source_bit.txt           // Original binary bitstream
-│    ├──  ├──DNA-40.5Kb-MC_Sim.fastq  // ART simulation data
-│    ├──  ├──original_seq-MC.txt      // Encoded payload sequence
-│    ├──  ├──SequenceL81000NoPeriodOnly2ndFILE// Watermark sequence
-│    ├──  ├──encoded_bit.txt          // Encoded bit sequence
+│    ├──  ├──source_bit.txt                     // Original binary bitstream
+│    ├──  ├──DNA-40.5Kb-MC_Sim.fastq            // ART simulation data
+│    ├──  ├──original_seq-MC.txt                // Encoded payload sequence
+│    ├──  ├──SequenceL81000NoPeriodOnly2ndFILE  // Watermark sequence
+│    ├──  ├──encoded_bit.txt                    // Encoded bit sequence
 
-├── fast_recovery                     // Fast recovery module
-│    ├── edlib                        // Edlib alignment library (dependency)
-│    ├── NLDPC_R05_configure          // Decoding configuration files (R = 0.5)
-│    ├── sliding_correlation.c        // Performs sliding correlation with watermark reference
-│    ├── bit-wise_consensus_recovery.c// Generates consensus bitstream from aligned reads
-│    ├── post_dec_hamming_dis.c       // Calculates Hamming distance
-│    ├── NLDPC_R1_2_soft_decoder      // Non-binary LDPC soft-decision decoder (R = 0.5)
-│    ├── LDPC_R2_3_soft_decoder       // Binary LDPC soft-decision decoder (R = 0.67)
+├── fast_recovery                               // Fast recovery module
+│    ├── edlib                                  // Edlib alignment library (dependency)
+│    ├── NLDPC_R05_configure                    // Decoding configuration files (R = 0.5)
+│    ├── sliding_correlation.c                  // Performs sliding correlation with watermark reference
+│    ├── bit-wise_consensus_recovery.c          // Generates consensus bitstream from aligned reads
+│    ├── post_dec_hamming_dis.c                 // Calculates Hamming distance
+│    ├── NLDPC_R1_2_soft_decoder                // Non-binary LDPC soft-decision decoder (R = 0.5)
+│    ├── LDPC_R2_3_soft_decoder                 // Binary LDPC soft-decision decoder (R = 0.67)
 
-├── bootstrap_recovery                // Bootstrap recovery module
-│    ├── edlib                        // Edlib alignment library (dependency)
-│    ├── NLDPC_R05_configure          // Decoding configuration files (R = 0.5)
-│    ├── sliding_correlation.c        // Performs sliding correlation with watermark reference
-│    ├── align_bits.cpp               // Aligns reads to regenerative reference at the bit level
-│    ├── dec_result_feedback.cpp	  // Refines soft decoding results with feedback
-│    ├── get_reads_bits.c	          // Converts read sequences into dual-layer A/T base strings
-│    ├── get_ref_bits.c               // Converts regenerative reference into dual-layer A/T base strings
-│    ├── getthre.c	                  // Extracts peak values for adaptive thresholding
-│    ├── lowthres_pthread_edlib.c	  // Aligns reads to scaffold reference
-│    ├── majorityvoting.c             // Builds scaffold sequence via base-wise majority voting
-│    ├── post_dec_hamming_dis.c	      // Calculates Hamming distance
-│    ├── R1_2_indel_correct	          // Forward-backward algorithm for indel correction (R = 0.5)
-│    ├── R5_6_indel_correct           // Forward-backward algorithm for indel correction (R = 0.83)
-│    ├── R1_2_multi-read_merging	  // Merges symbol probabilities to compute consensus soft information (R = 0.5)
-│    ├── R5_6_multi-read_merging	  // Merges symbol probabilities to compute consensus soft information (R = 0.83)
-│    ├── NLDPC_R1_2_soft_decoder      // Non-binary LDPC soft-decision decoder (R = 0.5)
-│    ├── LDPC_R5_6_soft_decoder       // Binary LDPC soft-decision decoder (R = 0.83)
+├── bootstrap_recovery                          // Bootstrap recovery module
+│    ├── edlib                                  // Edlib alignment library (dependency)
+│    ├── NLDPC_R05_configure                    // Decoding configuration files (R = 0.5)
+│    ├── sliding_correlation.c                  // Performs sliding correlation with watermark reference
+│    ├── align_bits.cpp                         // Aligns reads to regenerative reference at the bit level
+│    ├── dec_result_feedback.cpp	              // Refines soft decoding results with feedback
+│    ├── get_reads_bits.c	                      // Converts read sequences into dual-layer A/T base strings
+│    ├── get_ref_bits.c                         // Converts regenerative reference into dual-layer A/T base strings
+│    ├── getthre.c	                            // Extracts peak values for adaptive thresholding
+│    ├── lowthres_pthread_edlib.c	              // Aligns reads to scaffold reference
+│    ├── majorityvoting.c                       // Builds scaffold sequence via base-wise majority voting
+│    ├── post_dec_hamming_dis.c	                // Calculates Hamming distance
+│    ├── R1_2_indel_correct	                    // Forward-backward algorithm for indel correction (R = 0.5)
+│    ├── R5_6_indel_correct                     // Forward-backward algorithm for indel correction (R = 0.83)
+│    ├── R1_2_multi-read_merging	              // Merges symbol probabilities to compute consensus soft information (R = 0.5)
+│    ├── R5_6_multi-read_merging	              // Merges symbol probabilities to compute consensus soft information (R = 0.83)
+│    ├── NLDPC_R1_2_soft_decoder                // Non-binary LDPC soft-decision decoder (R = 0.5)
+│    ├── LDPC_R5_6_soft_decoder                 // Binary LDPC soft-decision decoder (R = 0.83)
 
-├── R0.5_fast_recovery.sh             // Shell script to run fast recovery (R = 0.5)
-├── R0.67_fast_recovery.sh            // Shell script to run fast recovery (R = 0.67)
-├── R0.5_bootstrap_recovery.sh        // Shell script to run bootstrap recovery (R = 0.5)
-├── R0.83_bootstrap_recovery.sh       // Shell script to run bootstrap recovery (R = 0.83)
-├── README.md                         // Documentation for the toolkit
+├── R0.5_fast_recovery.sh                       // Shell script to run fast recovery (R = 0.5)
+├── R0.67_fast_recovery.sh                      // Shell script to run fast recovery (R = 0.67)
+├── R0.5_bootstrap_recovery.sh                  // Shell script to run bootstrap recovery (R = 0.5)
+├── R0.83_bootstrap_recovery.sh                 // Shell script to run bootstrap recovery (R = 0.83)
+├── README.md                                   // Documentation for the toolkit
 
 ```
 
