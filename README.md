@@ -25,7 +25,7 @@ readout from massive, unordered sequencing reads requires alignment based on ove
 
 The entire software is implemented in C and C++, with input and output files provided alongside the program. Executable calls are organized into modular shell scripts, enabling easy and flexible deployment across different Linux distributions.
 
-We designed and synthesized four ~40 kb large DNA fragments using using low-density parity-check codes (https://github.com/radfordneal/LDPC-codes, by Radford M. Neal) and superimposed watermarks , respectively encoding Tagore's poem *Dreams* (DNA-40.5Kb-DR, R = 1/4), the image *Emblem* (DNA-40.5Kb-EM, R = 2/3), the image *Earthrise* (DNA-40.32Kb-ER, R = 1/2) and the image *Milk Coronet* (DNA-40.5Kb-MC, R = 5/6). We provide the corresponding data and decoding programs for fast recovery at all four code rates, and for bootstrap recovery at R = 1/2 and 5/6, supporting accurate decoding under different error conditions.
+We designed and synthesized four ~40 kb large DNA fragments using low-density parity-check codes (https://github.com/radfordneal/LDPC-codes, by Radford M. Neal) and superimposed watermarks , respectively encoding Tagore's poem *Dreams* (DNA-40.5Kb-DR, R = 1/4), the image *Emblem* (DNA-40.5Kb-EM, R = 2/3), the image *Earthrise* (DNA-40.32Kb-ER, R = 1/2) and the image *Milk Coronet* (DNA-40.5Kb-MC, R = 5/6). We provide the corresponding data and decoding programs for fast recovery at all four code rates, and for bootstrap recovery at R = 1/2 and 5/6, supporting accurate decoding under different error conditions.
 
 ## Requirements
 
