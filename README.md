@@ -139,8 +139,6 @@ Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provide
 ./Bootstrap_recovery_thread.sh
 ```
 
----
-
 ##### Stage 1
 
 ```bash
