@@ -86,8 +86,6 @@ The following tools and dependencies are required:
 
 **Command:**
 
-1. **Compilation**
-
 ```bash
 ./Compile.sh
 ./Fast_recovery.sh
