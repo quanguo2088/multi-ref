@@ -4,16 +4,20 @@
 
 ## Table of Contents
 
-- [Fast bootstrap and reliable readout using hidden references for DNA data storage](#fast-bootstrap-and-reliable-readout-using-hidden-references-for-dna-data-storage)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [Requirements](#requirements)
-  - [Kit Tree Diagram](#kit-tree-diagram)
-  - [Example of usage](#example-of-usage)
-    - [1. R0.67\_fast\_recovery](#1-r067_fast_recovery)
-    - [2. R0.83\_bootstrap\_recovery](#2-r083_bootstrap_recovery)
-  - [Note](#note)
-  - [License](#license)
+- [Overview](#overview)
+- [Requirements](#requirements)
+- [Kit Tree Diagram](#kit-tree-diagram)
+- [Example of usage](#example-of-usage)
+  - [1. R0.67_fast_recovery](#1-r067_fast_recovery)
+    - [Step 1: Sliding Correlation](#step-1-sliding-correlation)
+    - [Step 2: Bit‑wise Majority Voting](#step-2-bitwise-majority-voting)
+    - [Step 3: LDPC Decoding](#step-3-ldpc-decoding)
+  - [2. R0.83_bootstrap_recovery](#2-r083_bootstrap_recovery)
+    - [Stage 1](#stage-1)
+    - [Stage 2](#stage-2)
+    - [Stage 3](#stage-3)
+- [Note](#note)
+- [License](#license)
 
 ## Overview
 
@@ -25,7 +29,7 @@ readout from massive, unordered sequencing reads requires alignment based on ove
 
 The entire software is implemented in C and C++, with input and output files provided alongside the program. Executable calls are organized into modular shell scripts, enabling easy and flexible deployment across different Linux distributions.
 
-We designed and synthesized four ~40 kb large DNA fragments using low-density parity-check codes (https://github.com/radfordneal/LDPC-codes, by Radford M. Neal) and superimposed watermarks , respectively encoding Tagore's poem *Dreams* (DNA-40.5Kb-DR, R = 1/4), the image *Emblem* (DNA-40.5Kb-EM, R = 2/3), the image *Earthrise* (DNA-40.32Kb-ER, R = 1/2) and the image *Milk Coronet* (DNA-40.5Kb-MC, R = 5/6). We provide the corresponding data and decoding programs for fast recovery at all four code rates, and for bootstrap recovery at R = 1/2 and 5/6, supporting accurate decoding under different error conditions.
+We designed and synthesized four ~40 kb large DNA fragments using low-density parity-check codes (https://github.com/radfordneal/LDPC-codes, by Radford M. Neal) and superimposed watermarks , respectively encoding Tagore's poem *Dreams* (DNA-40.5Kb-DR, R = 1/4), the image *Emblem* (DNA-40.5Kb-EM, R = 2/3), the image *Earthrise* (DNA-40.32Kb-ER, R = 1/2) and the image *Milk Coronet* (DNA-40.5Kb-MC, R = 5/6). We provide the corresponding data and decoding programs to support both fast and bootstrap recovery at all four code rates, enabling accurate decoding under varying error conditions.
 
 ## Requirements
 
@@ -46,71 +50,34 @@ The following tools and dependencies are required:
 
 ## Kit Tree Diagram
 
-```html
+```
+.
+├── Fast recovery/                                # Fast recovery modules for four code rates
+│   ├── R0.25_fast_recovery/                      # Fast recovery for R = 1/4
+│   ├── R0.5_fast_recovery/                       # Fast recovery for R = 1/2
+│   ├── R0.67_fast_recovery/                      # Fast recovery for R = 2/3
+│   └── R0.83_fast_recovery/                      # Fast recovery for R = 5/6
+│       ├── bin/                                  # Compiled binaries
+│       ├── src/                                  # Source code
+│       ├── configure/                            # Watermark and decoding parameter files
+│       ├── sequencing_data/                      # Sequencing reads (FASTQ format)
+│       ├── Compile.sh                            # Compilation script
+│       └── Fast_recovery.sh                      # One-stage fast recovery using bit-wise consensus
 
-├── data                                        // Data module
-│    ├── R0.25
-│    ├──  ├──source_bit.txt                     // Original binary bitstream
-│    ├──  ├──DNA-40.5Kb-DR_SE150.fastq          // Sequencing data
-│    ├──  ├──original_seq-DR.txt                // Encoded payload sequence
-│    ├──  ├──SequenceLengthALL_FILE001R025      // Watermark sequence
-│    ├──  ├──encoded_bit.txt                    // Encoded bit sequence
-│    ├── R0.5
-│    ├──  ├──sourceBITearth4KB4032.txt          // Original binary bitstream
-│    ├──  ├──DNA-40.32Kb-ER_SE150.fastq         // Sequencing data
-│    ├──  ├──DNA-40.32Kb-ER_Sim.fastq           // ART simulation data
-│    ├──  ├──original_seq-ER.txt                // Encoded payload sequence
-│    ├──  ├──sequenceL80640NoPeriod2FILE        // Watermark sequence
-│    ├──  ├──encoded_bit.txt                    // Encoded bit sequence
-│    ├── R0.67
-│    ├──  ├──source_bit.txt                     // Original binary bitstream
-│    ├──  ├──DNA-40.5Kb-EM_SE150.fastq          // Sequencing data
-│    ├──  ├──original_seq-EM.txt                // Encoded payload sequence
-│    ├──  ├──SequenceLengthALL_FILE001R0667     // Watermark sequence
-│    ├──  ├──encoded_bit.txt                    // Encoded bit sequence
-│    ├── R0.83
-│    ├──  ├──source_bit.txt                     // Original binary bitstream
-│    ├──  ├──DNA-40.5Kb-MC_SE150.fastq          // Sequencing data
-│    ├──  ├──DNA-40.5Kb-MC_Sim.fastq            // ART simulation data
-│    ├──  ├──original_seq-MC.txt                // Encoded payload sequence
-│    ├──  ├──SequenceL81000NoPeriodOnly2ndFILE  // Watermark sequence
-│    ├──  ├──encoded_bit.txt                    // Encoded bit sequence
-├── fast_recovery                               // Fast recovery module
-│    ├── edlib                                  // Edlib alignment library (dependency)
-│    ├── NLDPC_R05_configure                    // Decoding configuration files (R = 0.5)
-│    ├── sliding_correlation.c                  // Performs sliding correlation with watermark reference
-│    ├── bit-wise_consensus_recovery.c          // Generates consensus soft information from aligned reads
-│    ├── post_dec_hamming_dis.c                 // Measures substitution errors via Hamming distance
-│    ├── LDPC_r1_4_soft_decoder                 // Binary LDPC soft-decision decoder (R = 0.25)
-│    ├── NLDPC_R1_2_soft_decoder                // Non-binary LDPC soft-decision decoder (R = 0.5)
-│    ├── LDPC_R2_3_soft_decoder                 // Binary LDPC soft-decision decoder (R = 0.67)
-│    ├── LDPC_r5_6_soft_decoder                 // Binary LDPC soft-decision decoder (R = 0.83)
-├── bootstrap_recovery                          // Bootstrap recovery module
-│    ├── edlib                                  // Edlib alignment library (dependency)
-│    ├── NLDPC_R05_configure                    // Decoding configuration files (R = 0.5)
-│    ├── sliding_correlation.c                  // Performs sliding correlation with watermark reference
-│    ├── align_bits.cpp                         // Aligns reads to regenerative reference at the bit level
-│    ├── dec_result_feedback.cpp                // Refines soft decoding results with feedback
-│    ├── get_reads_bits.c                       // Converts read sequences into dual-layer A/T base strings
-│    ├── get_ref_bits.c                         // Converts regenerative reference into dual-layer A/T base strings
-│    ├── getthre.c                              // Extracts peak values for adaptive thresholding
-│    ├── lowthres_pthread_edlib.c               // Aligns reads to scaffold reference
-│    ├── majorityvoting.c                       // Builds scaffold sequence via base-wise majority voting
-│    ├── post_dec_hamming_dis.c	                // Measures substitution errors via Hamming distance
-│    ├── R1_2_indel_correct                     // Forward-backward algorithm for indel correction (R = 0.5)
-│    ├── R5_6_indel_correct                     // Forward-backward algorithm for indel correction (R = 0.83)
-│    ├── R1_2_multi-read_merging                // Merges symbol probabilities to compute consensus soft information (R = 0.5)
-│    ├── R5_6_multi-read_merging                // Merges symbol probabilities to compute consensus soft information (R = 0.83)
-│    ├── NLDPC_R1_2_soft_decoder                // Non-binary LDPC soft-decision decoder (R = 0.5)
-│    ├── LDPC_R5_6_soft_decoder                 // Binary LDPC soft-decision decoder (R = 0.83)
-├── R0.25_fast_recovery.sh                      // Shell script to run fast recovery (R = 0.25)
-├── R0.5_fast_recovery.sh                       // Shell script to run fast recovery (R = 0.5)
-├── R0.67_fast_recovery.sh                      // Shell script to run fast recovery (R = 0.67)
-├── R0.83_fast_recovery.sh                      // Shell script to run fast recovery (R = 0.83)
-├── R0.5_bootstrap_recovery.sh                  // Shell script to run bootstrap recovery (R = 0.5)
-├── R0.83_bootstrap_recovery.sh                 // Shell script to run bootstrap recovery (R = 0.83)
-├── README.md                                   // Documentation for the toolkit
-
+├── Bootstrap recovery/                           # Bootstrap recovery modules for four code rates
+│   ├── R0.25_bootstrap_recovery/                 # Bootstrap recovery for R = 1/4
+│   ├── R0.5_bootstrap_recovery/                  # Bootstrap recovery for R = 1/2
+│   ├── R0.67_bootstrap_recovery/                 # Bootstrap recovery for R = 2/3
+│   └── R0.83_bootstrap_recovery/                 # Bootstrap recovery for R = 5/6
+│       ├── bin/                                  # Compiled binaries
+│       ├── src/                                  # Source code
+│       ├── configure/                            # Watermark and decoding parameter files
+│       ├── sequencing_data/                      # Sequencing reads (FASTQ format)
+│       ├── Compile.sh                            # Compilation script
+│       ├── R0.83_bootstrap_recovery_stage1.sh    # Stage 1: watermark reference identify Type-I reads for data recovery
+│       ├── R0.83_bootstrap_recovery_stage2.sh    # Stage 2: scaffold reference identify Type-II reads for data recovery
+│       ├── R0.83_bootstrap_recovery_stage3.sh    # Stage 3: regenerative reference identify Type-III reads for data recovery
+│       └── Bootstrap_recovery_thread.sh          # Full pipeline combining all three recovery stages
 ```
 
 ## Example of usage
@@ -119,24 +86,45 @@ The following tools and dependencies are required:
 
 **Command:**
 
+1. **Compilation**
+
 ```bash
-./R0.67_fast_recovery.sh
+./Compile.sh
+./Fast_recovery.sh
 ```
 
-**Input files:**
+##### [Step 1] Sliding Correlation
 
-- **DNA-40.5Kb-EM_SE150.fastq**: Illumina sequencing data with a length of 150 nt.
-- **SequenceLengthALL_FILE001R0667**: Watermark sequence embedded in the encoded large DNA fragment with a length of 81,000 bits.
-- **original_seq-EM.txt**: Encoded payload sequence with a length of 40,500 nt.
-- **source_bit.txt**: Binary bitstream of the original data with a length of 43,200 bits.
-- **permutation64800**: Interleaving index used for permuting the bitstream.
+**Inputs:**
 
-**Output files:**
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
+- `DNA-40.5Kb-EM_SE150.fastq` – Sequencing data
 
-- **correlation_result.txt**: Sliding correlation result including sequencing reads, peak values, positions and directions.
-- **err_of_dec_result.txt**: Result of substitution error between the decoded binary bits and the source bitstream, with two columns indicating the error count and error rate, respectively.
-- **recovery_bitstream.txt**: Decoded binary data bitstream with a length of 43,200 bits.
-- **recovery_image.jpg**: Original image of the decoded output.
+**Outputs:**
+
+- `correlation_result.txt` – read alignment information
+
+##### [Step 2] Bit‑wise Majority Voting
+
+**Inputs:**
+
+- `correlation_result.txt` – from Step 1
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
+
+**Outputs:**
+
+- `soft_info.txt` – consensus soft information
+
+##### [Step 3] LDPC Decoding
+
+**Inputs:**
+
+- `soft_info.txt` – from Step 2
+
+**Outputs:**
+
+- `recovery_image.jpg` – reconstructed image
+- `recovery_bitstream.txt` – decoded binary bitstream with a length of 43,200 bits
 
 Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provided and follow the same structure and usage as the R = 2/3 example.
 
@@ -147,35 +135,181 @@ Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provide
 **Command:**
 
 ```bash
-./R0.83_bootstrap_recovery.sh
+./Compile.sh
+./Bootstrap_recovery_thread.sh
 ```
 
-**Input files:**
+---
 
-- **DNA-40.5Kb-MC_Sim.fastq**: Simulation data of 150 nt obtained using ART software.
-- **SequenceL81000NoPeriodOnly2ndFILE**: Watermark sequence embedded in the encoded large DNA fragment with a length of 81,000 bits.
-- **encoded_bit.txt**: Codeword sequence of 64,800 bits encoded using LDPC (64800, 54000) code.
-- **original_seq_MC.txt**: Encoded payload sequence with a length of 40,500 nt.
-- **source_bit.txt**: Binary bitstream of the original data with a length of 54,000 bits.
-- **permutation64800**: Interleaving index used for permuting the bitstream.
+##### Stage 1
 
-**Output files:**
+```bash
+./R0.83_bootstrap_recovery_stage1.sh
+```
 
-- **correlation_result.txt**: Sliding correlation result including sequencing reads, peak values, positions and directions.
-- **Type-I_reads.txt**: Sequencing reads filtered by watermark reference.
-- **Type-II_reads.txt**: Sequencing reads filtered by scaffold reference.
-- **Type-III_reads.txt**:  Sequencing reads filtered by regenerative reference.
-- **scaffold_ref.txt**: Majority voting result for correlation-filtered reads with a length of 40,500 nt.
-- **dec_result.txt**: Decoded binary sequence with a length of 64,800 bits.
-- **soft_infor.txt**: Consensus soft information obtained after probability combination, with two columns indicating the probabilities of “1” and “0”, respectively.
-- **symbol_probability.txt**: Result of indel correction, where each set of three lines records the start position, length, and soft information of an encoded symbol.
-- **err_of_dec_result.txt**: Result of substitution error between the decoded binary bits and the source bitstream, with two columns indicating the error count and error rate, respectively.
-- **recovery_bitstream.txt**: Decoded binary data bitstream with a length of 54,000 bits.
-- **recovery_image.jpg**: Original image of the decoded output.
+##### [Step 1] Sliding Correlation
 
-The bootstrap recovery workflow for R = 1/2 is provided and follows the same structure and usage as the R = 5/6 example.
+**Inputs:**
+
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
+- `DNA-40.5Kb-MC-Sim.fastq` – simulated sequencing data
+
+**Outputs:**
+
+- `correlation_result.txt` – read alignment info
+- `Type-I_reads.txt` – low-error reads
+
+##### [Step 2] Forward-Backward Algorithm
+
+**Inputs:**
+
+- `Type-I_reads.txt` – from Step 1
+- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+
+**Outputs:**
+
+- `symbol_probability.txt` – indel-corrected symbol probability (Stage 1)
+
+##### [Step 3] Consensus Soft Information Generation
+
+**Inputs:**
+
+- `symbol_probability.txt` – from Step 2
+- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+
+**Outputs:**
+
+- `soft_info.txt` – consensus soft info (Stage 1)
+
+##### [Step 4] LDPC Decoding
+
+**Inputs:**
+
+- `soft_info.txt` – from Step 3
+
+**Outputs:**
+
+- `recovery_image.jpg` – recovery image
+- `correctedBitStream.txt` – decoded bitstream
+- `decodedCodeword.txt` – decoded codeword
 
 ---
+
+##### Stage 2
+
+```bash
+./R0.83_bootstrap_recovery_stage2.sh
+```
+
+##### [Step 1] Majority Voting – Generate Scaffold Reference
+
+**Inputs:**
+
+- `decodedCodeword.txt` – from Stage 1
+
+**Outputs:**
+
+- `scaffold_ref.txt` – scaffold reference
+
+##### [Step 2] Edlib Alignment for Correlation-failed Reads
+
+**Inputs:**
+
+- `scaffold_ref.txt` – from Step 1
+- `lowthres_reads.txt` – from Stage 1
+
+**Outputs:**
+
+- `TypeII_reads.txt` – type-II reads
+
+##### [Step 3] Forward-Backward Algorithm
+
+**Inputs:**
+
+- `TypeII_reads.txt` – from Step 2
+- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+
+**Outputs:**
+
+- `symbol_probability.txt` – indel-corrected symbol probability (Stage 2)
+
+##### [Step 4] Consensus Soft Information Generation
+
+**Inputs:**
+
+- `symbol_probability.txt` – from Step 3
+- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+
+**Outputs:**
+
+- `soft_info.txt` – consensus soft info (Stage 2)
+
+##### [Step 5] LDPC Decoding
+
+**Inputs:**
+
+- `soft_info.txt` – from Step 4
+
+**Outputs:**
+
+- `recovery_image.jpg` – recovery image
+- `correctedBitStream.txt` – decoded bitstream
+- `decodedCodeword.txt` – decoded codeword
+
+---
+
+##### Stage 3
+
+```bash
+./R0.83_bootstrap_recovery_stage3.sh
+```
+
+##### [Step 1] Decode Feedback to Generate Regenerative Reference
+
+**Inputs:**
+
+- `decodedCodeword.txt` – from Stage 2
+- `remaining_reads.txt` – from Stage 2
+
+**Outputs:**
+
+- `TypeIII_reads.txt` – type-III reads
+
+##### [Step 2] Forward-Backward Algorithm
+
+**Inputs:**
+
+- `TypeIII_reads.txt` – from Step 1
+- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+
+**Outputs:**
+
+- `symbol_probability.txt` – indel-corrected symbol probability (Stage 3)
+
+##### [Step 3] Consensus Soft Information Generation
+
+**Inputs:**
+
+- `symbol_probability.txt` – from Step 2
+- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+
+**Outputs:**
+
+- `soft_info.txt` – consensus soft info (Stage 3)
+
+##### [Step 4] LDPC Decoding
+
+**Inputs:**
+
+- `soft_info.txt` – from Step 3
+
+**Outputs:**
+
+- `recovery_image.jpg` – recovery image
+- `correctedBitStream.txt` – decoded bitstream
+- `decodedCodeword.txt` – decoded codeword
+
+The bootstrap recovery workflow for R = 1/2 is provided and follows the same structure and usage as the R = 5/6 example.
 
 ## Note
 
@@ -184,5 +318,3 @@ For comprehensive information on the structural design, coding scheme, and seque
 Chen, W.G., Han, M.Z., Zhou, J.T., Ge, Q., Wang, P.P., Zhang, X.C., Zhu, S.Y., Song, L.F., and Yuan, Y.J. (2021) An artificial chromosome for data storage. Natl. Sci. Rev., 8, nwab028.
 
 ## License
-
-Distributed under the MIT License. See LICENSE for more information.
