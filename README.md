@@ -13,9 +13,9 @@
     - [Step 2: Bit‑wise Majority Voting](#step-2-bitwise-majority-voting)
     - [Step 3: LDPC Decoding](#step-3-ldpc-decoding)
   - [2. R0.83_bootstrap_recovery](#2-r083_bootstrap_recovery)
-    - [Stage 1](#stage-1)
-    - [Stage 2](#stage-2)
-    - [Stage 3](#stage-3)
+    - [Stage 1: Hidden watermark reference-assisted readout](#stage-1)
+    - [Stage 2: Scaffold reference-assisted readout](#stage-2)
+    - [Stage 3: Regenerative reference-assisted readout](#stage-3)
 - [Note](#note)
 - [License](#license)
 
@@ -82,7 +82,7 @@ The following tools and dependencies are required:
 
 ## Example of usage
 
-### 1. R0.67_fast_recovery
+### 1. Fast Recovery (R = 2/3)
 
 **Command:**
 
@@ -91,44 +91,44 @@ The following tools and dependencies are required:
 ./Fast_recovery.sh
 ```
 
-##### [Step 1] Sliding Correlation
+#### [Step 1] Sliding Correlation
 
-**Inputs:**
+**Input files:**
 
-- `SequenceLengthALL_FILE001R0667` – known watermark sequence
-- `DNA-40.5Kb-EM_SE150.fastq` – Sequencing data
+- `SequenceLengthALL_FILE001R0667`	– known watermark sequence.
+- `DNA-40.5Kb-EM_SE150.fastq` – Real sequencing data with a raw error rate of 0.5%.
 
-**Outputs:**
+**Output files:**
 
-- `correlation_result.txt` – read alignment information
+- `correlation_result.txt`	– Read alignment information, includes read sequence, correlation peak, alignment position relative to the watermark, and strand orientation.
 
-##### [Step 2] Bit‑wise Majority Voting
+#### [Step 2] Bit‑wise Majority Voting
 
-**Inputs:**
+**Input files:**
 
-- `correlation_result.txt` – from Step 1
-- `SequenceLengthALL_FILE001R0667` – known watermark sequence
+- `SequenceLengthALL_FILE001R0667`	– Known watermark sequence.
+- `correlation_result.txt`	– Read alignment information from Step 1.
 
-**Outputs:**
+**Output files:**
 
-- `soft_info.txt` – consensus soft information
+- `soft_info.txt` – Consensus soft information with two columns: probability of "1" and "0" at each bit position.
 
-##### [Step 3] LDPC Decoding
+#### [Step 3] Soft-decision LDPC Decoding
 
-**Inputs:**
+**Input files:**
 
-- `soft_info.txt` – from Step 2
+- `soft_info.txt`  – Consensus soft information from Step 2.
 
-**Outputs:**
+**Output files:**
 
-- `recovery_image.jpg` – reconstructed image
-- `recovery_bitstream.txt` – decoded binary bitstream with a length of 43,200 bits
+- `recovery_image.jpg`	– Reconstructed image.
+- `recovery_bitstream.txt`	– Decoded binary stream (43,200 bits).
 
 Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provided and follow the same structure and usage as the R = 2/3 example.
 
 ---
 
-### 2. R0.83_bootstrap_recovery
+### 2. Bootstrap Recovery (R = 5/6)
 
 **Command:**
 
@@ -137,175 +137,178 @@ Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provide
 ./Bootstrap_recovery_thread.sh
 ```
 
-##### Stage 1
+#### Stage 1. Hidden watermark reference-assisted readout
 
 ```bash
 ./R0.83_bootstrap_recovery_stage1.sh
 ```
 
-##### [Step 1] Sliding Correlation
+#### [Step 1] Sliding Correlation
 
-**Inputs:**
+**Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
-- `DNA-40.5Kb-MC-Sim.fastq` – simulated sequencing data
+- `SequenceL81000NoPeriodOnly2ndFILE` – Known watermark sequence.
+- `DNA-40.5Kb-MC-Sim.fastq` – Simulated sequencing data with a raw error rate of 1.2% (including 0.6% indels).
 
-**Outputs:**
+**Output files:**
 
-- `correlation_result.txt` – read alignment info
-- `Type-I_reads.txt` – low-error reads
+- `correlation_result.txt` – Read alignment information, includes read sequence, correlation peak, alignment position relative to the watermark, and strand orientation.
+- `Type-I_reads.txt` – High-correlation reads with no indels or indels near the ends.
+- `lowthres_reads.txt` – Low-correlation reads that typically carried internal indel errors.
 
-##### [Step 2] Forward-Backward Algorithm
+#### [Step 2] Forward-Backward Algorithm
 
-**Inputs:**
+**Input files:**
 
-- `Type-I_reads.txt` – from Step 1
-- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+- `SequenceL81000NoPeriodOnly2ndFILE` – Known watermark sequence.
+- `Type-I_reads.txt` – High-correlation reads from Step 1.
 
-**Outputs:**
+**Output files:**
 
-- `symbol_probability.txt` – indel-corrected symbol probability (Stage 1)
+- `symbol_probability.txt` – indel-corrected symbol probability (from Type-I reads).
 
-##### [Step 3] Consensus Soft Information Generation
+#### [Step 3] Consensus Soft Information Generation
 
-**Inputs:**
+**Input files:**
 
-- `symbol_probability.txt` – from Step 2
-- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence.
+- `symbol_probability.txt` – indel-corrected symbol probability from Step 2.
 
-**Outputs:**
+**Output files:**
 
-- `soft_info.txt` – consensus soft info (Stage 1)
+- `soft_info.txt` – Consensus soft information (from Type-I reads).
 
-##### [Step 4] LDPC Decoding
+#### [Step 4] Soft-decision LDPC Decoding
 
-**Inputs:**
+**Input files:**
 
-- `soft_info.txt` – from Step 3
+- `soft_info.txt` – Consensus soft information from Step 3.
 
-**Outputs:**
+**Output files:**
 
-- `recovery_image.jpg` – recovery image
-- `correctedBitStream.txt` – decoded bitstream
-- `decodedCodeword.txt` – decoded codeword
+- `recovery_image.jpg` – Reconstructed image.
+- `correctedBitStream.txt` – Decoded binary stream (54,000 bits).
+- `decodedCodeword.txt` – Decoded codeword (64,800 bits)
 
 ---
 
-##### Stage 2
+#### Stage 2. Scaffold reference-assisted readout
 
 ```bash
 ./R0.83_bootstrap_recovery_stage2.sh
 ```
 
-##### [Step 1] Majority Voting – Generate Scaffold Reference
+#### [Step 1] Scaffold reference generation
 
-**Inputs:**
+**Input files:**
 
-- `decodedCodeword.txt` – from Stage 1
+- `Type-I_reads.txt`  – High-correlation reads from Stage 1.
 
-**Outputs:**
+**Output files:**
 
-- `scaffold_ref.txt` – scaffold reference
+- `scaffold_ref.txt`  – Scaffold reference constructed from Type-I reads.
 
-##### [Step 2] Edlib Alignment for Correlation-failed Reads
+#### [Step 2] Filtering Type-II reads
 
-**Inputs:**
+**Input files:**
 
-- `scaffold_ref.txt` – from Step 1
-- `lowthres_reads.txt` – from Stage 1
+- `scaffold_ref.txt` – Scaffold reference from Step 1.
+- `lowthres_reads.txt` – Low-correlation reads remaining from Stage 1.
 
-**Outputs:**
+**Output files:**
 
-- `TypeII_reads.txt` – type-II reads
+- `TypeII_reads.txt` – Type-II reads that typically carried internal indel errors.
+- `stage2_residual_reads.txt` – Reads not aligned to the scaffold reference (filtered out).
 
-##### [Step 3] Forward-Backward Algorithm
+#### [Step 3] Forward-Backward Algorithm
 
-**Inputs:**
+**Input files:**
 
-- `TypeII_reads.txt` – from Step 2
-- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence.
+- `TypeII_reads.txt` – Type-II reads from Step 2.
 
-**Outputs:**
+**Output files:**
 
-- `symbol_probability.txt` – indel-corrected symbol probability (Stage 2)
+- `symbol_probability.txt` – indel-corrected symbol probability (from Type-II reads).
 
-##### [Step 4] Consensus Soft Information Generation
+#### [Step 4] Consensus Soft Information Generation
 
-**Inputs:**
+**Input files:**
 
-- `symbol_probability.txt` – from Step 3
-- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence.
+- `symbol_probability.txt` – indel-corrected symbol probability from Step 3.
 
-**Outputs:**
+**Output files:**
 
-- `soft_info.txt` – consensus soft info (Stage 2)
+- `soft_info.txt` – Consensus soft information (from Type-II reads).
 
-##### [Step 5] LDPC Decoding
+#### [Step 5] Soft-decision LDPC Decoding
 
-**Inputs:**
+**Input files:**
 
-- `soft_info.txt` – from Step 4
+- `soft_info.txt` – Consensus soft information from Step 4
 
-**Outputs:**
+**Output files:**
 
-- `recovery_image.jpg` – recovery image
-- `correctedBitStream.txt` – decoded bitstream
-- `decodedCodeword.txt` – decoded codeword
+- `recovery_image.jpg` – Reconstructed image.
+- `correctedBitStream.txt` – Decoded binary stream (54,000 bits).
+- `decodedCodeword.txt` – Decoded codeword (64,800 bits)
 
 ---
 
-##### Stage 3
+#### Stage 3. Regenerative reference-assisted readout
 
 ```bash
 ./R0.83_bootstrap_recovery_stage3.sh
 ```
 
-##### [Step 1] Decode Feedback to Generate Regenerative Reference
+#### [Step 1] Regenerative reference generation & Filtering Type-III reads
 
-**Inputs:**
+**Input files:**
 
-- `decodedCodeword.txt` – from Stage 2
-- `remaining_reads.txt` – from Stage 2
+- `SequenceL81000NoPeriodOnly2ndFILE` – Known watermark sequence.
+- `decodedCodeword.txt` – Decoded codeword from Stage 2.
+- `stage2_residual_reads.txt` – Reads not aligned to the scaffold reference from Stage 2.
 
-**Outputs:**
+**Output files:**
 
-- `TypeIII_reads.txt` – type-III reads
+- `TypeIII_reads.txt` – Reads typically aligned to gap regions, identified during the final recovery stage.
 
-##### [Step 2] Forward-Backward Algorithm
+#### [Step 2] Forward-Backward Algorithm
 
-**Inputs:**
+**Input files:**
 
-- `TypeIII_reads.txt` – from Step 1
-- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence.
+- `TypeIII_reads.txt` – `Type-III reads` from Step 1.
 
-**Outputs:**
+**Output files:**
 
-- `symbol_probability.txt` – indel-corrected symbol probability (Stage 3)
+- `symbol_probability.txt` – indel-corrected symbol probability (from Type-III reads).
 
-##### [Step 3] Consensus Soft Information Generation
+#### [Step 3] Consensus soft information generation
 
-**Inputs:**
+**Input files:**
 
-- `symbol_probability.txt` – from Step 2
-- `SequenceL81000NoPeriodOnly2ndFILE` – watermark
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence.
+- `symbol_probability.txt` – indel-corrected symbol probability from Step 2.
 
-**Outputs:**
+**Output files:**
 
-- `soft_info.txt` – consensus soft info (Stage 3)
+- `soft_info.txt` – Consensus soft information (from Type-III reads).
 
-##### [Step 4] LDPC Decoding
+#### [Step 4] Soft-decision LDPC decoding
 
-**Inputs:**
+**Input files:**
 
-- `soft_info.txt` – from Step 3
+- `soft_info.txt` – Consensus soft information from Step 3.
 
-**Outputs:**
+**Output files:**
 
-- `recovery_image.jpg` – recovery image
-- `correctedBitStream.txt` – decoded bitstream
-- `decodedCodeword.txt` – decoded codeword
+- `recovery_image.jpg` – Reconstructed image.
+- `correctedBitStream.txt` – Decoded binary stream (54,000 bits).
+- `decodedCodeword.txt` – Decoded codeword (64,800 bits)
 
-The bootstrap recovery workflow for R = 1/2 is provided and follows the same structure and usage as the R = 5/6 example.
+The bootstrap recovery workflow for other code rates (R = 1/4, 1/2, and 2/3) are provided and follow the same structure and usage as the R = 5/6 example.
 
 ## Note
 
@@ -314,3 +317,5 @@ For comprehensive information on the structural design, coding scheme, and seque
 Chen, W.G., Han, M.Z., Zhou, J.T., Ge, Q., Wang, P.P., Zhang, X.C., Zhu, S.Y., Song, L.F., and Yuan, Y.J. (2021) An artificial chromosome for data storage. Natl. Sci. Rev., 8, nwab028.
 
 ## License
+
+This project is licensed under the MIT License. See the [LICENSE] file for details.
