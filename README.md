@@ -9,7 +9,7 @@
 - [Kit Tree Diagram](#kit-tree-diagram)
 - [Example of usage](#example-of-usage)
   - [1. Fast Recovery (R = 2/3)](#1-fast-recovery-r--23)
-  - [2. Bootstrap Recovery stage 1 (R = 5/6)](#2-bootstrap-recovery-stage-1-r--56)
+  - [2. Bootstrap Recovery stage 1 only (R = 5/6)](#2-bootstrap-recovery-stage-1-r--56)
   - [3. Bootstrap Recovery stages 1+2 (R = 5/6)](#3-bootstrap-recovery-stages-12-r--56)
   - [4. Bootstrap Recovery stages 1+2+3 (R = 5/6)](#4-bootstrap-recovery-stages-123-r--56)
 - [Note](#note)
@@ -118,7 +118,7 @@ cd ./R0.67_fast_recovery/
 
 **Input files:**
 
-- `SequenceLengthALL_FILE001R0667` – known watermark sequence  
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `DNA-40.5Kb-EM_SE150.fastq` – real sequencing data with a raw error rate of 0.5%
 
 **Output files:**
@@ -129,7 +129,7 @@ cd ./R0.67_fast_recovery/
 
 **Input files:**
 
-- `SequenceLengthALL_FILE001R0667` – known watermark sequence  
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `correlation_result.txt` – read alignment information from Step 1
 
 **Output files:**
@@ -144,7 +144,7 @@ cd ./R0.67_fast_recovery/
 
 **Output files:**
 
-- `recovery_image.jpg` – reconstructed image  
+- `recovery_image.jpg` – reconstructed image
 - `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
 
 Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provided and follow the same structure and usage as the R = 2/3 example.
@@ -165,20 +165,20 @@ cd ./R0.83_bootstrap_recovery_stage1/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence  
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
 - `DNA-40.5Kb-MC-Sim.fastq` – simulated sequencing data with a raw error rate of 1.2% (including 0.6% indels)
 
 **Output files:**
 
-- `correlation_result.txt` – read alignment information including read sequence, correlation peak, alignment position relative to the watermark, and strand orientation  
-- `Type-I_reads.txt` – high-correlation reads with no indels or indels near the ends  
+- `correlation_result.txt` – read alignment information including read sequence, correlation peak, alignment position relative to the watermark, and strand orientation
+- `Type-I_reads.txt` – high-correlation reads with no indels or indels near the ends
 - `lowthres_reads.txt` – low-correlation reads that typically carried internal indel errors
 
 #### [Step 2] Forward-backward algorithm (FBA)
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence  
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
 - `Type-I_reads.txt` – high-correlation reads from Step 1
 
 **Output files:**
@@ -189,7 +189,7 @@ cd ./R0.83_bootstrap_recovery_stage1/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence  
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
 - `symbol_probability.txt` – indel-corrected symbol probability from Step 2
 
 **Output files:**
@@ -204,8 +204,8 @@ cd ./R0.83_bootstrap_recovery_stage1/
 
 **Output files:**
 
-- `recovery_image.jpg` – reconstructed image  
-- `correctedBitStream.txt` – decoded binary stream (54,000 bits)  
+- `recovery_image.jpg` – reconstructed image
+- `recovery_bitstream.txt` – decoded binary stream (54,000 bits)
 - `decodedCodeword.txt` – decoded full LDPC codeword including systematic and parity bits (64,800 bits)
 
 ---
@@ -228,25 +228,25 @@ cd ./R0.83_bootstrap_recovery_stage1_2/
 
 **Input files:**
 
-- `Type-I_reads.txt` – high-correlation reads from Stage 1  
+- `Type-I_reads.txt` – high-correlation reads from Stage 1
 - `lowthres_reads.txt` – low-correlation reads remaining from Stage 1
 
 **Output files:**
 
-- `TypeII_reads.txt` – Type-II reads that typically carried internal indel errors  
+- `TypeII_reads.txt` – Type-II reads that typically carried internal indel errors
 - `stage2_residual_reads.txt` – reads not aligned to the scaffold reference (filtered out)
 
 #### [Step 3–5] FBA, consensus, and decoding
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence  
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
 - `TypeII_reads.txt` – Type-II reads from Step 2
 
 **Output files:**
 
-- `recovery_image.jpg` – reconstructed image  
-- `correctedBitStream.txt` – decoded binary stream (54,000 bits)  
+- `recovery_image.jpg` – reconstructed image
+- `recovery_bitstream.txt` – decoded binary stream (54,000 bits)
 - `decodedCodeword.txt` – decoded full LDPC codeword including systematic and parity bits (64,800 bits)
 
 ---
@@ -269,8 +269,8 @@ cd ./R0.83_bootstrap_recovery_stage1_2_3/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence  
-- `decodedCodeword.txt` – decoded codeword from Stage 2  
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
+- `decodedCodeword.txt` – decoded codeword from Stage 2
 - `stage2_residual_reads.txt` – reads not aligned to the scaffold reference from Stage 2
 
 **Output files:**
@@ -281,17 +281,30 @@ cd ./R0.83_bootstrap_recovery_stage1_2_3/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence  
+- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
 - `TypeIII_reads.txt` – Type-III reads from Step 1
 
 **Output files:**
 
-- `recovery_image.jpg` – reconstructed image  
-- `correctedBitStream.txt` – decoded binary stream (54,000 bits)  
+- `recovery_image.jpg` – reconstructed image
+- `recovery_bitstream.txt` – decoded binary stream (54,000 bits)
 - `decodedCodeword.txt` – decoded full LDPC codeword including systematic and parity bits (64,800 bits)
 
-The bootstrap recovery workflow for other code rates (R = 1/4, 1/2, and 2/3) is provided and follows the same structure and usage as the R = 5/6 example.
+In addition, each bootstrap recovery workflow logs summary statistics for every independent experiment in:
 
+`./R0.83_bootstrap_recovery_stage1_2_3/results/recovery_status.txt`
+
+This file contains seven columns:
+
+1. Experiment ID
+2. Erasure rate
+3. Substitution error rate
+4. Recovery stage (0 = failure, 1 = stage 1, 2 = stage 2, 3 = stage 3)
+5. Number of Type-I reads
+6. Number of Type-II reads
+7. Number of Type-III reads
+
+The bootstrap recovery workflow for other code rates (R = 1/4, 1/2, and 2/3) is provided and follows the same structure and usage as the R = 5/6 example.
 
 ## Note
 
