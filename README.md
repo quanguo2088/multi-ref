@@ -8,10 +8,10 @@
 - [Requirements](#requirements)
 - [Kit Tree Diagram](#kit-tree-diagram)
 - [Example of usage](#example-of-usage)
-  - [1. Fast Recovery (R = 2/3)](#1-fast-recovery-r--23)
-  - [2. Bootstrap Recovery stage 1 only (R = 5/6)](#2-bootstrap-recovery-stage-1-r--56)
-  - [3. Bootstrap Recovery stages 1+2 (R = 5/6)](#3-bootstrap-recovery-stages-12-r--56)
-  - [4. Bootstrap Recovery stages 1+2+3 (R = 5/6)](#4-bootstrap-recovery-stages-123-r--56)
+  - [1. Fast recovery (R = 2/3)](#1-fast-recovery-r--23)
+  - [2. Bootstrap recovery stage 1 only (R = 5/6)](#2-bootstrap-recovery-stage-1-r--56)
+  - [3. Bootstrap recovery stages 1+2 (R = 5/6)](#3-bootstrap-recovery-stages-12-r--56)
+  - [4. Bootstrap recovery stages 1+2+3 (R = 5/6)](#4-bootstrap-recovery-stages-123-r--56)
 - [Note](#note)
 - [License](#license)
 
@@ -45,9 +45,10 @@ The program has been tested on the following operating systems:
 
 The following tools and dependencies are required:
 
-- **C Compilers:** Ensure gcc is installed.
-- **C++ Compilers:** Ensure g++ is installed.
-- **Edlib**: The Edlib should be available for sequence alignment. You can download it from the official repository: https://github.com/Martinsos/edlib
+- **C compiler**: Ensure `gcc` is installed.
+- **C++ compiler**: Ensure `g++` is installed.
+- **Edlib**: Sequence alignment library. Available at [https://github.com/Martinsos/edlib](https://github.com/Martinsos/edlib).
+- **LDPC codes**: LDPC encoder/decoder by Radford M. Neal. Available at [https://github.com/radfordneal/LDPC-codes](https://github.com/radfordneal/LDPC-codes).
 
 ## Kit Tree Diagram
 
@@ -104,7 +105,7 @@ The following tools and dependencies are required:
 
 ## Example of usage
 
-### 1. Fast Recovery (R = 2/3)
+### 1. Fast recovery (R = 2/3)
 
 **Command:**
 
@@ -151,7 +152,7 @@ Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provide
 
 ---
 
-### 2. Bootstrap Recovery stage 1 only (R = 5/6)
+### 2. Bootstrap recovery stage 1 only (R = 5/6)
 
 **Command:**
 
@@ -210,7 +211,7 @@ cd ./R0.83_bootstrap_recovery_stage1/
 
 ---
 
-### 3. Bootstrap Recovery stages 1+2 (R = 5/6)
+### 3. Bootstrap recovery stages 1+2 (R = 5/6)
 
 **Command:**
 
@@ -234,7 +235,7 @@ cd ./R0.83_bootstrap_recovery_stage1_2/
 **Output files:**
 
 - `TypeII_reads.txt` – Type-II reads that typically carried internal indel errors
-- `stage2_residual_reads.txt` – reads not aligned to the scaffold reference (filtered out)
+- `stage2_residual_reads.txt` – unaligned reads discarded during scaffold mapping
 
 #### [Step 3–5] FBA, consensus, and decoding
 
@@ -251,7 +252,7 @@ cd ./R0.83_bootstrap_recovery_stage1_2/
 
 ---
 
-### 4. Bootstrap Recovery stages 1+2+3 (R = 5/6)
+### 4. Bootstrap recovery stages 1+2+3 (R = 5/6)
 
 **Command:**
 
@@ -271,7 +272,7 @@ cd ./R0.83_bootstrap_recovery_stage1_2_3/
 
 - `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
 - `decodedCodeword.txt` – decoded codeword from Stage 2
-- `stage2_residual_reads.txt` – reads not aligned to the scaffold reference from Stage 2
+- `stage2_residual_reads.txt` – unaligned reads discarded during scaffold mapping from Stage 2
 
 **Output files:**
 
@@ -299,7 +300,7 @@ This file contains seven columns:
 1. Experiment ID
 2. Erasure rate
 3. Substitution error rate
-4. Recovery stage (0 = failure, 1 = stage 1, 2 = stage 2, 3 = stage 3)
+4. Recovery stage (0: not recovered, 1: after stage 1, 2: after stage 2, 3: after stage 3)
 5. Number of Type-I reads
 6. Number of Type-II reads
 7. Number of Type-III reads
