@@ -309,9 +309,12 @@ The bootstrap recovery workflow for other code rates (R = 1/4, 1/2, and 2/3) is 
 
 ## Note
 
-For comprehensive information on the coding scheme in this study, please refer to the literature:
+For comprehensive information on the coding scheme in this study, please refer to the following literature:
 
-Chen, W.G., Han, M.Z., Zhou, J.T., Ge, Q., Wang, P.P., Zhang, X.C., Zhu, S.Y., Song, L.F., and Yuan, Y.J. (2021) An artificial chromosome for data storage. Natl. Sci. Rev., 8, nwab028.
+- MacKay, D.J.C., and Neal, R.M. (1996) Near Shannon limit performance of low density parity check codes. Electronics Letters, 32(18): 1645–1646.
+- Davey, M.C., and MacKay, D.J.C. (2001) Reliable communication over channels with insertions, deletions, and substitutions. IEEE Transactions on Information Theory, 47(2): 687–698.
+- Chen, W.G., Han, M.Z., Zhou, J.T., Ge, Q., Wang, P.P., Zhang, X.C., Zhu, S.Y., Song, L.F., and Yuan, Y.J. (2021) An artificial chromosome for data storage. National Science Review, 8: nwab028.
+- Ge, Q., Qin, R., Liu, S., Guo, Q., Han, C., and Chen, W.G. (2025) Pragmatic soft-decision data readout of encoded large DNA. Briefings in Bioinformatics, 26: bbaf102.
 
 ## License
 
