@@ -9,9 +9,9 @@
 - [Kit Tree Diagram](#kit-tree-diagram)
 - [Example of usage](#example-of-usage)
   - [1. Fast recovery (R = 2/3)](#1-fast-recovery-r--23)
-  - [2. Bootstrap recovery stage 1 only (R = 5/6)](#2-bootstrap-recovery-stage-1-r--56)
-  - [3. Bootstrap recovery stages 1+2 (R = 5/6)](#3-bootstrap-recovery-stages-12-r--56)
-  - [4. Bootstrap recovery stages 1+2+3 (R = 5/6)](#4-bootstrap-recovery-stages-123-r--56)
+  - [2. Bootstrap recovery with Type-I Reads only (R = 5/6)](#2-bootstrap-recovery-with-type-i-reads-only-r--56)
+  - [3. Bootstrap recovery with Type-I + II Reads (R = 5/6)](#3-bootstrap-recovery-with-type-i--ii-reads-r--56)
+  - [4. Bootstrap recovery with Type-I + II + III Reads (R = 5/6)](#4-bootstrap-recovery-with-type-i--ii--iii-reads-r--56)
 - [Note](#note)
 - [License](#license)
 
@@ -22,11 +22,14 @@ Synthetic DNA is becoming a promising data storage medium for future large-scale
 1. **Fast recovery**: In low-error-rate scenarios, the pipeline identifies reads via sliding correlation with the watermark reference. Bit-wise consensus rapidly generates soft-decision information for LDPC decoding.
 2. **Bootstrap recovery**: In the presence of indels, the pipeline progressively identifies reads with distinct features using multiple-fold references. The forward-backward algorithm is employed to generate indel-corrected probability information to enable reliable readout.
 
-To facilitate evaluation and demonstration, we decompose the bootstrap recovery into three incremental workflows:
+To facilitate evaluation, bootstrap recovery is divided into three workflows based on progressively refined references and read types. Each workflow supports soft-decision LDPC decoding using the forward-backward algorithm (FBA):
 
-- Stage 1 only: initial recovery based on hidden watermark reference.
-- Stages 1+2: includes scaffold reference-assisted refinement.
-- Stages 1+2+3: full pipeline with regenerative reference for final enhancement.
+- **Type-I Reads only**: Identified by aligning to the embedded watermark reference; typically free of indels or containing only end-position indels.
+
+- **Type-I + Type-II Reads**: Adds a scaffold reference constructed from Type-I reads to recover Type-II reads, which typically contain internal indels.
+
+- **Type-I + Type-II + Type-III Reads**: Uses a regenerative reference derived from decoding feedback to recover residual Type-III reads that fall into scaffold gaps.
+
 
 The entire software is implemented in C and C++, with input and output files provided alongside the program. Executable calls are organized into modular shell scripts, enabling easy and flexible deployment across different Linux distributions.
 
@@ -53,54 +56,54 @@ The following tools and dependencies are required:
 ## Kit Tree Diagram
 
 ```
-.
-├── fast_recovery/                                # Fast recovery modules for four code rates
-│   ├── R0.25_fast_recovery/                      # Fast recovery for R = 1/4
-│   ├── R0.5_fast_recovery/                       # Fast recovery for R = 1/2
-│   ├── R0.67_fast_recovery/                      # Fast recovery for R = 2/3
-│   └── R0.83_fast_recovery/                      # Fast recovery for R = 5/6
-│       ├── bin/                                  # Compiled binaries
-│       ├── src/                                  # Source code
-│       ├── configure/                            # Watermark and decoding parameter files
-│       ├── sequencing_data/                      # Sequencing reads (FASTQ format)
-│       ├── Compile.sh                            # Compilation script
-│       └── Fast_recovery.sh                      # One-stage fast recovery
+├── fast_recovery_BW/                                # Fast recovery modules
+│   ├── R0.25/
+│   ├── R0.5/
+│   ├── R0.67/
+│   └── R0.83/
+│       ├── src/
+│       ├── bin/
+│       ├── configure/
+│       ├── sequencing_data/
+│       ├── build.sh
+│       └── recover.sh
 
-├── bootstrap_recovery_stage1/                    # Bootstrap recovery stage 1 modules for four code rates
-│   ├── R0.25_bootstrap_recovery_stage1/          # Bootstrap recovery stage 1 for R = 1/4
-│   ├── R0.5_bootstrap_recovery_stage1/           # Bootstrap recovery stage 1 for R = 1/2
-│   ├── R0.67_bootstrap_recovery_stage1/          # Bootstrap recovery stage 1 for R = 2/3
-│   └── R0.83_bootstrap_recovery_stage1/          # Bootstrap recovery stage 1 for R = 5/6
-│       ├── bin/                                  # Compiled binaries
-│       ├── src/                                  # Source code
-│       ├── configure/                            # Watermark and decoding parameter files
-│       ├── sequencing_data/                      # Sequencing reads (FASTQ format)
-│       ├── Compile.sh                            # Compilation script
-│       └── Bootstrap_recovery_stage1.sh          # Run stage 1 of bootstrap recovery
+├── bootstrap_recovery_TypeIReads_FBA/               # Bootstrap stage 1: Type-I Reads only
+│   ├── R0.25/
+│   ├── R0.5/
+│   ├── R0.67/
+│   └── R0.83/
+│       ├── src/
+│       ├── bin/
+│       ├── configure/
+│       ├── sequencing_data/
+│       ├── build.sh
+│       └── recover.sh
 
-├── bootstrap_recovery_stage1_2/                  # Bootstrap recovery stage 1+2 modules for four code rates
-│   ├── R0.25_bootstrap_recovery_stage1_2/        # Bootstrap recovery stage 1+2 for R = 1/4
-│   ├── R0.5_bootstrap_recovery_stage1_2/         # Bootstrap recovery stage 1+2 for R = 1/2
-│   ├── R0.67_bootstrap_recovery_stage1_2/        # Bootstrap recovery stage 1+2 for R = 2/3
-│   └── R0.83_bootstrap_recovery_stage1_2/        # Bootstrap recovery stage 1+2 for R = 5/6
-│       ├── bin/                                  # Compiled binaries
-│       ├── src/                                  # Source code
-│       ├── configure/                            # Watermark and decoding parameter files
-│       ├── sequencing_data/                      # Sequencing reads (FASTQ format)
-│       ├── Compile.sh                            # Compilation script
-│       └── Bootstrap_recovery_stage1_2.sh        # Run stages 1+2 of bootstrap recovery
+├── bootstrap_recovery_TypeI+IIReads_FBA/            # Bootstrap stage 1+2: Type-I + Type-II Reads
+│   ├── R0.25/
+│   ├── R0.5/
+│   ├── R0.67/
+│   └── R0.83/
+│       ├── src/
+│       ├── bin/
+│       ├── configure/
+│       ├── sequencing_data/
+│       ├── build.sh
+│       └── recover.sh
 
-├── bootstrap_recovery_stage1_2_3/                # Bootstrap recovery stage 1+2+3 modules for four code rates
-│   ├── R0.25_bootstrap_recovery_stage1_2_3/      # Bootstrap recovery stage 1+2+3 for R = 1/4
-│   ├── R0.5_bootstrap_recovery_stage1_2_3/       # Bootstrap recovery stage 1+2+3 for R = 1/2
-│   ├── R0.67_bootstrap_recovery_stage1_2_3/      # Bootstrap recovery stage 1+2+3 for R = 2/3
-│   └── R0.83_bootstrap_recovery_stage1_2_3/      # Bootstrap recovery stage 1+2+3 for R = 5/6
-│       ├── bin/                                  # Compiled binaries
-│       ├── src/                                  # Source code
-│       ├── configure/                            # Watermark and decoding parameter files
-│       ├── sequencing_data/                      # Sequencing reads (FASTQ format)
-│       ├── Compile.sh                            # Compilation script
-│       └── Bootstrap_recovery_stage1_2_3.sh      # Run stages 1+2+3 of bootstrap recovery
+├── bootstrap_recovery_TypeI+II+IIIReads_FBA/        # Bootstrap full stages 1+2+3: Type-I + II + III Reads
+│   ├── R0.25/
+│   ├── R0.5/
+│   ├── R0.67/
+│   └── R0.83/
+│       ├── src/
+│       ├── bin/
+│       ├── configure/
+│       ├── sequencing_data/
+│       ├── build.sh
+│       └── recover.sh
+
 ```
 
 ## Example of usage
@@ -110,9 +113,9 @@ The following tools and dependencies are required:
 **Command:**
 
 ```bash
-cd ./R0.67_fast_recovery/ 
-./Compile.sh
-./Fast_recovery.sh
+cd ./fast_recovery_BW/R0.67/
+./build.sh
+./recover.sh
 ```
 
 #### [Step 1] Sliding correlation
@@ -124,7 +127,7 @@ cd ./R0.67_fast_recovery/
 
 **Output files:**
 
-- `correlation_result.txt` – read alignment information including read sequence, correlation peak value, alignment position relative to the watermark, and strand orientation
+- `correlation_result.txt` – read alignment info (sequence, correlation peak, position, strand)
 
 #### [Step 2] Bit-wise majority voting
 
@@ -152,14 +155,14 @@ Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provide
 
 ---
 
-### 2. Bootstrap recovery stage 1 only (R = 5/6)
+### 2. Bootstrap recovery with Type-I Reads only (R = 5/6)
 
 **Command:**
 
 ```bash
-cd ./R0.83_bootstrap_recovery_stage1/
-./Compile.sh
-./Bootstrap_recovery_stage1.sh
+cd ./bootstrap_recovery_TypeIReads_FBA/R0.83/
+./build.sh
+./recover.sh
 ```
 
 #### [Step 1] Sliding correlation
@@ -211,19 +214,19 @@ cd ./R0.83_bootstrap_recovery_stage1/
 
 ---
 
-### 3. Bootstrap recovery stages 1+2 (R = 5/6)
+### 3. Bootstrap recovery with Type-I + II Reads (R = 5/6)
 
 **Command:**
 
 ```bash
-cd ./R0.83_bootstrap_recovery_stage1_2/
-./Compile.sh
-./Bootstrap_recovery_stage1_2.sh
+cd ./bootstrap_recovery_TypeI+IIReads_FBA/R0.83/
+./build.sh
+./recover.sh
 ```
 
-#### ➤ Stage 1: *(see above)*
+#### Stage 1: *(see above)*
 
-#### ➤ Stage 2:
+#### Stage 2:
 
 #### [Step 1–2] Scaffold reference generation and filtering Type-II reads
 
@@ -252,19 +255,19 @@ cd ./R0.83_bootstrap_recovery_stage1_2/
 
 ---
 
-### 4. Bootstrap recovery stages 1+2+3 (R = 5/6)
+### 4. Bootstrap recovery with Type-I + II + III Reads (R = 5/6)
 
 **Command:**
 
 ```bash
-cd ./R0.83_bootstrap_recovery_stage1_2_3/
-./Compile.sh
-./Bootstrap_recovery_stage1_2_3.sh
+cd ./bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.83/
+./build.sh
+./recover.sh
 ```
 
-#### ➤ Stage 1 and Stage 2: *(see above)*
+#### Stage 1 and Stage 2: *(see above)*
 
-#### ➤ Stage 3:
+#### Stage 3:
 
 #### [Step 1–2] Regenerative reference generation and filtering Type-III reads
 
@@ -293,7 +296,7 @@ cd ./R0.83_bootstrap_recovery_stage1_2_3/
 
 In addition, each bootstrap recovery workflow logs summary statistics for every independent experiment in:
 
-`./R0.83_bootstrap_recovery_stage1_2_3/results/recovery_status.txt`
+`./bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.83/results/recovery_status.txt`
 
 This file contains seven columns:
 
