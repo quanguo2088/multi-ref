@@ -56,7 +56,7 @@ The following tools and dependencies are required:
 ## Kit Tree Diagram
 
 ```
-├── fast_recovery_BW/                                # Fast recovery modules
+├── fast_recovery_BW/                             # Fast recovery modules
 │   ├── R0.25/
 │   ├── R0.5/
 │   ├── R0.67/
@@ -68,7 +68,7 @@ The following tools and dependencies are required:
 │       ├── build.sh
 │       └── recover.sh
 
-├── bootstrap_recovery_TypeIReads_FBA/               # Bootstrap stage 1: Type-I Reads only
+├── bootstrap_recovery_TypeIReads_FBA/            # Bootstrap stage 1: Type-I Reads only
 │   ├── R0.25/
 │   ├── R0.5/
 │   ├── R0.67/
@@ -80,7 +80,7 @@ The following tools and dependencies are required:
 │       ├── build.sh
 │       └── recover.sh
 
-├── bootstrap_recovery_TypeI+IIReads_FBA/            # Bootstrap stage 1+2: Type-I + Type-II Reads
+├── bootstrap_recovery_TypeI+IIReads_FBA/         # Bootstrap stage 1+2: Type-I + Type-II Reads
 │   ├── R0.25/
 │   ├── R0.5/
 │   ├── R0.67/
@@ -92,7 +92,7 @@ The following tools and dependencies are required:
 │       ├── build.sh
 │       └── recover.sh
 
-├── bootstrap_recovery_TypeI+II+IIIReads_FBA/        # Bootstrap full stages 1+2+3: Type-I + II + III Reads
+├── bootstrap_recovery_TypeI+II+IIIReads_FBA/     # Bootstrap full stages 1+2+3: Type-I + II + III Reads
 │   ├── R0.25/
 │   ├── R0.5/
 │   ├── R0.67/
