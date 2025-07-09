@@ -135,7 +135,7 @@ cd ./fast_recovery_BW/R0.67/
 
 **Output files:**
 
-- `soft_info.txt` – consensus soft information with two columns: probability of "1" and "0" at each bit position
+- `soft_info.txt` – consensus soft information with two columns: probability of "0" and "1" at each bit position
 
 #### [Step 3] Soft-decision LDPC decoding
 
