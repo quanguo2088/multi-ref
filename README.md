@@ -30,7 +30,7 @@ To facilitate evaluation, bootstrap recovery is divided into three workflows, ea
 
 The entire software is implemented in C and C++, with input and output files provided alongside the program. Executable calls are organized into modular shell scripts, enabling easy and flexible deployment across different Linux distributions.
 
-We designed and synthesized four ~40 kb DNA sequences at different LDPC code rates: DNA-40.5Kb-DR (R = 1/4), DNA-40.32Kb-ER (R = 1/2), DNA-40.5Kb-EM (R = 2/3),and DNA-40.5Kb-MC (R = 5/6). We provide the corresponding data and decoding programs to support both fast and bootstrap recovery across all four code rates, enabling accurate readout under diverse error conditions.
+We designed and synthesized four ~40 kb DNA sequences at different LDPC code rates: DNA-40.5Kb-DR (R = 1/4), DNA-40.32Kb-ER (R = 1/2), DNA-40.5Kb-EM (R = 2/3),and DNA-40.5Kb-MC (R = 5/6). We provide the corresponding data and recovery programs to support both fast and bootstrap recovery across all four code rates, enabling accurate readout under diverse error conditions.
 
 ## Requirements
 
