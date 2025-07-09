@@ -124,7 +124,7 @@ cd ./fast_recovery_BW/R0.67/
 
 **Output files:**
 
-- `correlation_result.txt` – read alignment info (sequence, correlation peak, position, strand)
+- `correlation_result.txt` – read alignment information (sequence, correlation peak, position, strand)
 
 #### [Step 2] Bit-wise majority voting
 
