@@ -120,7 +120,7 @@ cd ./fast_recovery_BW/R0.67/
 **Input files:**
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
-- `DNA-40.5Kb-EM_SE150.fastq` – real sequencing data with a raw error rate of 0.2%
+- `DNA-40.5Kb-EM-SE150.fastq` – real sequencing data with a raw error rate of 0.2%
 
 **Output files:**
 
@@ -167,12 +167,12 @@ cd ./bootstrap_recovery_TypeIReads_FBA/R0.83/
 **Input files:**
 
 - `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
-- `DNA-40.5Kb-MC-Sim.fastq` – simulated sequencing data with a raw error rate of 1.2% (including 0.6% indels)
+- `DNA-40.5Kb-MC-Sim-1.fastq` – simulated sequencing data with a raw error rate of 1.2% (including 0.6% indels)
 
 **Output files:**
 
 - `correlation_result.txt` – read alignment information including read sequence, correlation peak, alignment position relative to the watermark, and strand orientation
-- `Type-I_reads.txt` – high-correlation reads with no indels or indels near the ends
+- `TypeI_reads.txt` – high-correlation reads with no indels or indels near the ends
 - `lowthres_reads.txt` – low-correlation reads that typically carried internal indel errors
 
 #### [Step 2] Forward-backward algorithm (FBA)
@@ -180,7 +180,7 @@ cd ./bootstrap_recovery_TypeIReads_FBA/R0.83/
 **Input files:**
 
 - `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
-- `Type-I_reads.txt` – high-correlation reads from Step 1
+- `TypeI_reads.txt` – high-correlation reads from Step 1
 
 **Output files:**
 
@@ -229,7 +229,7 @@ cd ./bootstrap_recovery_TypeI+IIReads_FBA/R0.83/
 
 **Input files:**
 
-- `Type-I_reads.txt` – high-correlation reads from Stage 1
+- `TypeI_reads.txt` – high-correlation reads from Stage 1
 - `lowthres_reads.txt` – low-correlation reads remaining from Stage 1
 
 **Output files:**
