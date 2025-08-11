@@ -22,7 +22,7 @@ Synthetic DNA is becoming a promising data storage medium for future large-scale
 1. **Fast recovery**: In low-error-rate scenarios, the pipeline identifies reads via sliding correlation to watermark reference. Bit-wise consensus rapidly generates soft-decision information for LDPC decoding.
 2. **Bootstrap recovery**: In the presence of indels, the pipeline progressively identifies reads with distinct features using multiple-fold references. The forward–backward algorithm (FBA) generates indel-corrected probability information for reliable readout.
 
-To facilitate evaluation, bootstrap recovery is divided into three workflows, each using progressively refined references and different combinations of read types. In each workflow, the FBA is applied to produce soft information for LDPC decoding:
+To facilitate evaluation, bootstrap recovery is divided into three workflows, each using progressively refined references and different combinations of read types. In each workflow, the FBA is applied to generate soft information for LDPC decoding:
 
 - **Type-I Reads only**: Identified by aligning to the embedded watermark reference; typically free of indels or containing only end-position indels.
 - **Type-I + Type-II Reads**: Adds a scaffold reference constructed from Type-I reads to recover Type-II reads, which typically contain internal indels.
@@ -30,7 +30,7 @@ To facilitate evaluation, bootstrap recovery is divided into three workflows, ea
 
 The entire software is implemented in C and C++, with input and output files provided alongside the program. Executable calls are organized into modular shell scripts, enabling easy and flexible deployment across different Linux distributions.
 
-We designed and synthesized four ~40 kb DNA sequences at different LDPC code rates: DNA-40.5Kb-DR (R = 1/4), DNA-40.32Kb-ER (R = 1/2), DNA-40.5Kb-EM (R = 2/3),and DNA-40.5Kb-MC (R = 5/6). We provide the corresponding data and recovery programs to support both fast and bootstrap recovery across all four code rates, enabling accurate readout under diverse error conditions.
+We designed and synthesized four ~40 kb DNA sequences at different LDPC code rates: DNA-40.5Kb-DR (R = 1/4), DNA-40.32Kb-ER (R = 1/2), DNA-40.5Kb-EM (R = 2/3),and DNA-40.5Kb-MC (R = 5/6). We provide the corresponding data and recovery programs to support both fast and bootstrap recovery at all four code rates, enabling accurate readout under diverse error conditions.
 
 ## Requirements
 
