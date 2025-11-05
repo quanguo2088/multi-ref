@@ -1,6 +1,6 @@
 # Fast bootstrap and reliable readout using hidden references for DNA data storage
 
-![Alt Text](./images/image.png)
+![Alt Text](./image/image.png)
 
 ## Table of Contents
 
@@ -54,10 +54,12 @@ The following tools and dependencies are required:
 
 ```
 ├── fast_recovery_BW/                             # Fast recovery
-│   ├── R0.25/
-│   ├── R0.5/
-│   ├── R0.67/
-│   └── R0.83/
+│   ├── R0.25_Illumina/
+│   ├── R0.25_ONT
+│   ├── R0.5_Illumina/
+│   ├── R0.67_Illumina/
+│   ├── R0.67_ONT/
+│   └── R0.83_Illumina/
 │       ├── src/
 │       ├── bin/
 │       ├── configure/
@@ -66,10 +68,12 @@ The following tools and dependencies are required:
 │       └── recover.sh
 
 ├── bootstrap_recovery_TypeIReads_FBA/            # Bootstrap recovery with Type-I Reads only
-│   ├── R0.25/
-│   ├── R0.5/
-│   ├── R0.67/
-│   └── R0.83/
+│   ├── R0.25_Illumina/
+│   ├── R0.25_ONT
+│   ├── R0.5_Illumina/
+│   ├── R0.67_Illumina/
+│   ├── R0.67_ONT/
+│   └── R0.83_Illumina/
 │       ├── src/
 │       ├── bin/
 │       ├── configure/
@@ -78,10 +82,12 @@ The following tools and dependencies are required:
 │       └── recover.sh
 
 ├── bootstrap_recovery_TypeI+IIReads_FBA/         # Bootstrap recovery with Type-I + Type-II Reads
-│   ├── R0.25/
-│   ├── R0.5/
-│   ├── R0.67/
-│   └── R0.83/
+│   ├── R0.25_Illumina/
+│   ├── R0.25_ONT
+│   ├── R0.5_Illumina/
+│   ├── R0.67_Illumina/
+│   ├── R0.67_ONT/
+│   └── R0.83_Illumina/
 │       ├── src/
 │       ├── bin/
 │       ├── configure/
@@ -90,10 +96,12 @@ The following tools and dependencies are required:
 │       └── recover.sh
 
 ├── bootstrap_recovery_TypeI+II+IIIReads_FBA/     # Bootstrap recovery with Type-I + II + III Reads
-│   ├── R0.25/
-│   ├── R0.5/
-│   ├── R0.67/
-│   └── R0.83/
+│   ├── R0.25_Illumina/
+│   ├── R0.25_ONT
+│   ├── R0.5_Illumina/
+│   ├── R0.67_Illumina/
+│   ├── R0.67_ONT/
+│   └── R0.83_Illumina/
 │       ├── src/
 │       ├── bin/
 │       ├── configure/
