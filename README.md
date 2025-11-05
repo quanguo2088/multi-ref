@@ -8,12 +8,13 @@
 - [Requirements](#requirements)
 - [Kit Tree Diagram](#kit-tree-diagram)
 - [Example of usage](#example-of-usage)
-  - [1. Fast recovery (R = 2/3)](#1-fast-recovery-r--23)
-  - [2. Bootstrap recovery with Type-I Reads only (R = 5/6)](#2-bootstrap-recovery-with-type-i-reads-only-r--56)
-  - [3. Bootstrap recovery with Type-I + II Reads (R = 5/6)](#3-bootstrap-recovery-with-type-i--ii-reads-r--56)
-  - [4. Bootstrap recovery with Type-I + II + III Reads (R = 5/6)](#4-bootstrap-recovery-with-type-i--ii--iii-reads-r--56)
+  - [1. Fast recovery (Illumina, R = 2/3)](#1-fast-recovery-illumina-r--23)
+  - [2. Bootstrap recovery with Type-I Reads only (ONT, R = 2/3)](#2-bootstrap-recovery-with-type-i-reads-only-ont-r--23)
+  - [3. Bootstrap recovery with Type-I + II Reads (ONT, R = 2/3)](#3-bootstrap-recovery-with-type-i--ii-reads-ont-r--23)
+  - [4. Bootstrap recovery with Type-I + II + III Reads (ONT, R = 2/3)](#4-bootstrap-recovery-with-type-i--ii--iii-reads-ont-r--23)
 - [Note](#note)
 - [License](#license)
+
 
 ## Overview
 
