@@ -7,7 +7,7 @@
 - [Overview](#overview)
 - [Requirements](#requirements)
 - [Example of usage](#example-of-usage)
-  - [1. Fast Recovery (Illumina, R2/3)](#1-fast-recovery)
+  - [1. Fast Recovery (Illumina, R=2/3)](#1-fast-recovery)
   - [2. Bootstrap recovery (ONT, R=2/3)](#2-bootstrap-recovery)
 - [Note](#note)
 - [License](#license)
@@ -18,12 +18,6 @@ Synthetic DNA is becoming a promising data storage medium for future large-scale
 
 1. **Fast recovery**: In low-error-rate scenarios, the pipeline identifies reads via sliding correlation to watermark reference. Bit-wise consensus rapidly generates soft-decision information for LDPC decoding.
 2. **Bootstrap recovery**: In the presence of indels, the pipeline progressively identifies reads with distinct features using multiple-fold references. The forward–backward algorithm (FBA) generates indel-corrected probability information for reliable readout.
-
-To facilitate evaluation, bootstrap recovery is divided into three workflows, each using progressively refined references and different combinations of read types. In each workflow, the FBA is applied to generate soft information for LDPC decoding:
-
-- **Type-I Reads only**: Identified by aligning to the embedded watermark reference; typically free of indels or containing only end-position indels.
-- **Type-I + Type-II Reads**: Adds a scaffold reference constructed from Type-I reads to recover Type-II reads, which typically contain internal indels.
-- **Type-I + Type-II + Type-III Reads**: Uses a regenerative reference derived from decoding feedback to recover residual Type-III reads that fall into scaffold gaps.
 
 The proposed scheme is compatible with next-generation sequencing (NGS) and Oxford Nanopore Technologies (ONT) sequencing platforms (see [Summary of Datasets](docs/Summary%20of%20datasets.pdf)). We provide the complete source code and datasets used to generate the recovery results presented in this study
 (see [Summary of Experiments](docs/Summary%20of%20experiments.pdf)).
