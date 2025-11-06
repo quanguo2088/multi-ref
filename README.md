@@ -93,7 +93,7 @@ Output files:
 
 #### [Step 2] Bit-wise majority voting
 
-**Input files:**
+Input files:
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `correlation_result.txt` – read alignment information from Step 1
@@ -131,7 +131,7 @@ cd ./Figure5/bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/
 
 #### Stage 1. Recovery with Type-I Reads
 
-##### [Step 0] Read segmentation (only used for ONT sequencing data)
+#### [Step 0] Read segmentation (only used for ONT sequencing data)
 
 Input files:
 
@@ -142,7 +142,7 @@ Output files:
 
 - `DNA-40.5Kb-EM-ONT-1-segment.fastq` – segmented ONT reads
 
-##### [Step 1] Sliding correlation
+#### [Step 1] Sliding correlation
 
 Input files:
 
@@ -155,7 +155,7 @@ Output files:
 - `TypeI_reads.txt` – high-correlation reads with no indels or indels near the ends
 - `lowthres_reads.txt` – low-correlation reads that typically carried internal indel errors
 
-##### [Step 2] Forward-backward algorithm (FBA)
+#### [Step 2] Forward-backward algorithm (FBA)
 
 Input files:
 
@@ -166,7 +166,7 @@ Output files:
 
 - `symbol_probability.txt` – indel-corrected symbol probability (from Type-I reads)
 
-##### [Step 3] Consensus soft information generation
+#### [Step 3] Consensus soft information generation
 
 Input files:
 
@@ -177,7 +177,7 @@ Output files:
 
 - `soft_info.txt` – consensus soft information (from Type-I reads)
 
-##### [Step 4] Soft-decision LDPC decoding
+#### [Step 4] Soft-decision LDPC decoding
 
 Input files:
 
@@ -191,9 +191,9 @@ Output files:
 
 ---
 
-#### Stage 2. Recovery with Type-I+II Reads
+### Stage 2. Recovery with Type-I+II Reads
 
-##### [Step 1–2] Scaffold reference generation and filtering Type-II reads
+#### [Step 1–2] Scaffold reference generation and filtering Type-II reads
 
 Input files:
 
@@ -205,7 +205,7 @@ Output files:
 - `TypeII_reads.txt` – Type-II reads that typically carried internal indel errors
 - `scaffold_unaligned_reads.txt` – residual reads not aligned to the scaffold
 
-##### [Step 3–5] FBA, consensus, and decoding
+#### [Step 3–5] FBA, consensus, and decoding
 
 Input files:
 
@@ -220,9 +220,9 @@ Output files:
 
 ---
 
-#### Stage 3. Recovery with Type-I+II+III Reads
+### Stage 3. Recovery with Type-I+II+III Reads
 
-##### [Step 1–2] Regenerative reference generation and filtering Type-III reads
+#### [Step 1–2] Regenerative reference generation and filtering Type-III reads
 
 Input files:
 
@@ -234,7 +234,7 @@ Output files:
 
 - `TypeIII_reads.txt` – reads typically aligned to gap regions, identified during the final recovery stage
 
-##### [Step 3–5] FBA, consensus, and decoding
+#### [Step 3–5] FBA, consensus, and decoding
 
 Input files:
 
