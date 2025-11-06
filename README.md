@@ -19,8 +19,8 @@ Synthetic DNA is becoming a promising data storage medium for future large-scale
 1. **Fast recovery**: In low-error-rate scenarios, the pipeline identifies reads via sliding correlation to watermark reference. Bit-wise consensus rapidly generates soft-decision information for LDPC decoding.
 2. **Bootstrap recovery**: In the presence of indels, the pipeline progressively identifies reads with distinct features using multiple-fold references. The forward–backward algorithm (FBA) generates indel-corrected probability information for reliable readout.
 
-The proposed scheme is compatible with next-generation sequencing (NGS) and Oxford Nanopore Technologies (ONT) sequencing platforms (see [Summary of Datasets](docs/Summary%20of%20datasets.pdf)). We provide the complete source code and datasets used to generate the recovery results presented in this study
-(see [Summary of Experiments](docs/Summary%20of%20experiments.pdf)).
+The proposed scheme is compatible with next-generation sequencing (NGS) and Oxford Nanopore Technologies (ONT) sequencing platforms (see [Summary of datasets](docs/Summary%20of%20datasets.pdf)). We provide the complete source code and datasets used to generate the recovery results presented in this study
+(see [Summary of experiments](docs/Summary%20of%20experiments.pdf)).
 
 ---
 
