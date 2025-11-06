@@ -6,12 +6,9 @@
 
 - [Overview](#overview)
 - [Requirements](#requirements)
-- [Kit Tree Diagram](#kit-tree-diagram)
 - [Example of usage](#example-of-usage)
   - [1. Fast recovery (Illumina, R = 2/3)](#1-fast-recovery-illumina-r--23)
-  - [2. Bootstrap recovery with Type-I Reads only (ONT, R = 2/3)](#2-bootstrap-recovery-with-type-i-reads-only-ont-r--23)
-  - [3. Bootstrap recovery with Type-I + II Reads (ONT, R = 2/3)](#3-bootstrap-recovery-with-type-i--ii-reads-ont-r--23)
-  - [4. Bootstrap recovery with Type-I + II + III Reads (ONT, R = 2/3)](#4-bootstrap-recovery-with-type-i--ii--iii-reads-ont-r--23)
+  - [2. Bootstrap recovery with Type-I + II + III Reads (ONT, R = 2/3)](#4-bootstrap-recovery-with-type-i--ii--iii-reads-ont-r--23)
 - [Note](#note)
 - [License](#license)
 
@@ -66,7 +63,6 @@ We also provide a Docker image **`bootstrap_readout_v1.0`** encapsulating the ex
 | Velvet                 | 1.2.09             |
 | ART                    | 2.5.8              |
 
-
 We provide a shell script to create and enter the container for recovery experiments.
 
 ```bash
@@ -78,7 +74,7 @@ cd Docker_image
 
 ## Example of usage
 
-### 1. Fast Recovery  
+### 1. Fast Recovery
 
 Fast recovery was performed on Illumina sequencing data (`DNA-40.5Kb-EM-SE150.fastq`), corresponding to Figure 3B.
 
