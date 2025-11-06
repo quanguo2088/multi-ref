@@ -119,7 +119,7 @@ Fast recovery workflows for both Illumina (R = 1/4, 1/2, 5/6) and ONT (R = 1/4, 
 
 ### 2. Bootstrap recovery
 
-Bootstrap recovery utilized ONT sequencing data (`DNA-40.5Kb-EM-ONT-1.fastq`), corresponding to the results in Figure 5E.
+Bootstrap recovery was performed on ONT sequencing data (`DNA-40.5Kb-EM-ONT-1.fastq`), corresponding to the results in Figure 5E.
 
 **Command:**
 
