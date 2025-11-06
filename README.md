@@ -129,7 +129,7 @@ cd ./Figure5/bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/
 ./recover.sh
 ```
 
-#### Stage 1. Recovery with Type-I Reads
+### Stage 1. Recovery with Type-I Reads
 
 #### [Step 0] Read segmentation (only used for ONT sequencing data)
 
@@ -142,7 +142,7 @@ Output files:
 
 - `DNA-40.5Kb-EM-ONT-1-segment.fastq` – segmented ONT reads
 
-### [Step 1] Sliding correlation
+#### [Step 1] Sliding correlation
 
 Input files:
 
