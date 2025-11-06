@@ -142,7 +142,7 @@ Output files:
 
 - `DNA-40.5Kb-EM-ONT-1-segment.fastq` – segmented ONT reads
 
-#### [Step 1] Sliding correlation
+### [Step 1] Sliding correlation
 
 Input files:
 
