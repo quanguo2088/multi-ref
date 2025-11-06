@@ -42,9 +42,9 @@ The following tools and dependencies are required:
 - **Edlib** — sequence alignment library
   [https://github.com/Martinsos/edlib](https://github.com/Martinsos/edlib)
 
-### Use Docker
+### Docker Environment
 
-We also provide a Docker image **`bootstrap_readout_v1.0`** encapsulating the experimental software environment.
+A pre-built Docker image **`bootstrap_readout_v1.0`** is provided to encapsulate the complete experimental software environment.
 
 #### **Docker Environment Summary**
 
@@ -57,7 +57,7 @@ We also provide a Docker image **`bootstrap_readout_v1.0`** encapsulating the ex
 | Velvet                 | 1.2.09             |
 | ART                    | 2.5.8              |
 
-We provide a shell script to create and enter the container for recovery experiments.
+To start the environment, run:
 
 ```bash
 cd Docker_image
@@ -89,7 +89,7 @@ cd ./Recovery_code/Figure3/R0.67/
 
 **Output files:**
 
-- `correlation_result.txt` – read alignment information (sequence, correlation peak, position, strand)
+- `correlation_result.txt` – read alignment information including read sequence, correlation peak, alignment position relative to the watermark, and strand orientation
 
 #### [Step 2] Bit-wise majority voting
 
