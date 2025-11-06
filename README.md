@@ -7,8 +7,8 @@
 - [Overview](#overview)
 - [Requirements](#requirements)
 - [Example of usage](#example-of-usage)
-  - [1. Fast Recovery](#1-fast-recovery)
-  - [2. Bootstrap recovery](#2-bootstrap-recovery)
+  - [1. Fast Recovery (Illumina, R2/3)](#1-fast-recovery)
+  - [2. Bootstrap recovery (ONT, R=2/3)](#2-bootstrap-recovery)
 - [Note](#note)
 - [License](#license)
 
