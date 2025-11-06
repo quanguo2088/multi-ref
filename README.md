@@ -82,12 +82,12 @@ cd ./Recovery_code/Figure3/R0.67/
 
 #### [Step 1] Sliding correlation
 
-**Input files:**
+Input files:
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `DNA-40.5Kb-EM-SE150.fastq` – real sequencing data with a raw error rate of 0.2%
 
-**Output files:**
+Output files:
 
 - `correlation_result.txt` – read alignment information including read sequence, correlation peak, alignment position relative to the watermark, and strand orientation
 
@@ -98,17 +98,17 @@ cd ./Recovery_code/Figure3/R0.67/
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `correlation_result.txt` – read alignment information from Step 1
 
-**Output files:**
+Output files:
 
 - `soft_info.txt` – consensus soft information with two columns: probability of "0" and "1" at each bit position
 
 #### [Step 3] Soft-decision LDPC decoding
 
-**Input files:**
+Input files:
 
 - `soft_info.txt` – consensus soft information from Step 2
 
-**Output files:**
+Output files:
 
 - `recovery_image.jpg` – reconstructed image
 - `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
@@ -133,23 +133,23 @@ cd ./Figure5/bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/
 
 ##### [Step 0] Read segmentation (only used for ONT sequencing data)
 
-**Input files:**
+Input files:
 
 - `DNA-40.5Kb-EM-ONT-1.fastq` – ONT sequencing data with a raw error rate of 4.7%
 - `Target_length` – target fragment length (typically set to 150 in practice)
 
-**Output files:**
+Output files:
 
 - `DNA-40.5Kb-EM-ONT-1-segment.fastq` – segmented ONT reads
 
 ##### [Step 1] Sliding correlation
 
-**Input files:**
+Input files:
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `DNA-40.5Kb-EM-ONT-1-segment.fastq`  – segmented ONT reads from Step 0
 
-**Output files:**
+Output files:
 
 - `correlation_result.txt` – read alignment information including read sequence, correlation peak, alignment position relative to the watermark, and strand orientation
 - `TypeI_reads.txt` – high-correlation reads with no indels or indels near the ends
@@ -157,33 +157,33 @@ cd ./Figure5/bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/
 
 ##### [Step 2] Forward-backward algorithm (FBA)
 
-**Input files:**
+Input files:
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `TypeI_reads.txt` – high-correlation reads from Step 1
 
-**Output files:**
+Output files:
 
 - `symbol_probability.txt` – indel-corrected symbol probability (from Type-I reads)
 
 ##### [Step 3] Consensus soft information generation
 
-**Input files:**
+Input files:
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `symbol_probability.txt` – indel-corrected symbol probability from Step 2
 
-**Output files:**
+Output files:
 
 - `soft_info.txt` – consensus soft information (from Type-I reads)
 
 ##### [Step 4] Soft-decision LDPC decoding
 
-**Input files:**
+Input files:
 
 - `soft_info.txt` – consensus soft information from Step 3
 
-**Output files:**
+Output files:
 
 - `recovery_image.jpg` – reconstructed image
 - `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
@@ -195,24 +195,24 @@ cd ./Figure5/bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/
 
 ##### [Step 1–2] Scaffold reference generation and filtering Type-II reads
 
-**Input files:**
+Input files:
 
 - `TypeI_reads.txt` – high-correlation reads from Stage 1
 - `lowthres_reads.txt` – low-correlation reads remaining from Stage 1
 
-**Output files:**
+Output files:
 
 - `TypeII_reads.txt` – Type-II reads that typically carried internal indel errors
 - `scaffold_unaligned_reads.txt` – residual reads not aligned to the scaffold
 
 ##### [Step 3–5] FBA, consensus, and decoding
 
-**Input files:**
+Input files:
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `TypeII_reads.txt` – Type-II reads from Step 2
 
-**Output files:**
+Output files:
 
 - `recovery_image.jpg` – reconstructed image
 - `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
@@ -224,24 +224,24 @@ cd ./Figure5/bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/
 
 ##### [Step 1–2] Regenerative reference generation and filtering Type-III reads
 
-**Input files:**
+Input files:
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `decodedCodeword.txt` – decoded codeword from Stage 2
 - `scaffold_unaligned_reads.txt` – residual reads not aligned to the scaffold from Stage 2
 
-**Output files:**
+Output files:
 
 - `TypeIII_reads.txt` – reads typically aligned to gap regions, identified during the final recovery stage
 
 ##### [Step 3–5] FBA, consensus, and decoding
 
-**Input files:**
+Input files:
 
 - `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `TypeIII_reads.txt` – Type-III reads from Step 1
 
-**Output files:**
+Output files:
 
 - `recovery_image.jpg` – reconstructed image
 - `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
