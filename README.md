@@ -70,7 +70,7 @@ cd Docker_image
 
 ### 1. Fast Recovery
 
-Fast recovery was performed on Illumina sequencing data (`DNA-40.5Kb-EM-SE150.fastq`), corresponding to Figure 3B.
+Fast recovery was performed on Illumina sequencing data (`DNA-40.5Kb-EM-SE150.fastq`), corresponding to the results in Figure 3B.
 
 **Command:**
 
@@ -119,7 +119,7 @@ Fast recovery workflows for both Illumina (R = 1/4, 1/2, 5/6) and ONT (R = 1/4, 
 
 ### 2. Bootstrap recovery
 
-Bootstrap recovery was performed on ONT sequencing data (`DNA-40.5Kb-EM-ONT-1.fastq`), corresponding to Figure 5E.
+Bootstrap recovery utilized ONT sequencing data (`DNA-40.5Kb-EM-ONT-1.fastq`), corresponding to the results in Figure 5E.
 
 **Command:**
 
@@ -249,7 +249,7 @@ cd ./Figure5/bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/
 
 Summary statistics for all independent experiments are saved in:
 
-`./bootstrap_recovery_TypeI+II+IIIReads_FBA/ONT_R0.67/results/recovery_status.txt`
+`./bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/results/recovery_status.txt`
 
 This file contains seven columns:
 
