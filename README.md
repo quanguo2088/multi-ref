@@ -7,8 +7,8 @@
 - [Overview](#overview)
 - [Requirements](#requirements)
 - [Example of usage](#example-of-usage)
-  - [1. Fast Recovery (Illumina, R=2/3)](#1-fast-recovery)
-  - [2. Bootstrap recovery (ONT, R=2/3)](#2-bootstrap-recovery)
+  - [1. Fast recovery (Illumina data, R=2/3)](#1-fast-recovery)
+  - [2. Bootstrap recovery (ONT data, R=2/3)](#2-bootstrap-recovery)
 - [Note](#note)
 - [License](#license)
 
@@ -68,7 +68,7 @@ cd Docker_image
 
 ## Example of usage
 
-### 1. Fast Recovery
+### 1. Fast recovery
 
 Fast recovery was performed on Illumina sequencing data (`DNA-40.5Kb-EM-SE150.fastq`), corresponding to the results in Figure 3B.
 
