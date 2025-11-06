@@ -15,10 +15,9 @@
 - [Note](#note)
 - [License](#license)
 
-
 ## Overview
 
-Synthetic DNA is becoming a promising data storage medium for future large-scale data archiving. However, data readout from massive, unordered sequencing reads requires alignment based on overlapping regions and is complicated by diverse sequencing errors. We propose a multi-stage alignment and error correction strategy via multiple-fold hidden references, transforming the de novo readout into a resequencing-like workflow. The proposed scheme is compatible with next-generation sequencing (NGS) and Oxford Nanopore Technologies (ONT) sequencing platforms, maximizes the utilization of sequencing reads, and enables assembly-free data readout under low sequencing coverage. We provide code for readout pipelines under different error conditions, divided into two main parts：
+Synthetic DNA is becoming a promising data storage medium for future large-scale data archiving. However, data readout from massive, unordered sequencing reads requires alignment based on overlapping regions and is complicated by diverse sequencing errors. We propose a multi-stage alignment and error correction strategy via multiple-fold hidden references, transforming the de novo readout into a resequencing-like workflow. We provide code for readout pipelines under different error conditions, divided into two main parts：
 
 1. **Fast recovery**: In low-error-rate scenarios, the pipeline identifies reads via sliding correlation to watermark reference. Bit-wise consensus rapidly generates soft-decision information for LDPC decoding.
 2. **Bootstrap recovery**: In the presence of indels, the pipeline progressively identifies reads with distinct features using multiple-fold references. The forward–backward algorithm (FBA) generates indel-corrected probability information for reliable readout.
@@ -29,97 +28,64 @@ To facilitate evaluation, bootstrap recovery is divided into three workflows, ea
 - **Type-I + Type-II Reads**: Adds a scaffold reference constructed from Type-I reads to recover Type-II reads, which typically contain internal indels.
 - **Type-I + Type-II + Type-III Reads**: Uses a regenerative reference derived from decoding feedback to recover residual Type-III reads that fall into scaffold gaps.
 
-The entire software is implemented in C and C++, with input and output files provided alongside the program. Executable calls are organized into modular shell scripts, enabling easy and flexible deployment across different Linux distributions.
+The proposed scheme is compatible with next-generation sequencing (NGS) and Oxford Nanopore Technologies (ONT) sequencing platforms (see [Summary of Datasets](docs/Summary%20of%20datasets.pdf)). We provide the complete source code and datasets used to generate the recovery results presented in this study
+(see [Summary of Experiments](docs/Summary%20of%20experiments.pdf)).
 
-We designed and synthesized four ~40 kb DNA sequences at different LDPC code rates: DNA-40.5Kb-DR (R = 1/4), DNA-40.32Kb-ER (R = 1/2), DNA-40.5Kb-EM (R = 2/3),and DNA-40.5Kb-MC (R = 5/6). We provide the corresponding data and recovery programs to support both fast and bootstrap recovery at all four code rates, enabling accurate readout under diverse error conditions.
+---
 
 ## Requirements
 
-**OS Requirements**
+### **OS Requirements**
 
 The program has been tested on the following operating systems:
 
 - **Ubuntu 18.04.6 LTS**
 - **Ubuntu 20.04.6 LTS**
 
-**Software Requirements**
+### **Software Requirements**
 
 The following tools and dependencies are required:
 
-- **C compiler**: Ensure `gcc` is installed.
-- **C++ compiler**: Ensure `g++` is installed.
-- **Edlib**: Sequence alignment library. Available at [https://github.com/Martinsos/edlib](https://github.com/Martinsos/edlib).
-- **LDPC codes**: LDPC encoder/decoder by Radford M. Neal. Available at [https://github.com/radfordneal/LDPC-codes](https://github.com/radfordneal/LDPC-codes).
+- **C compiler** — ensure `gcc` is installed
+- **C++ compiler** — ensure `g++` is installed
+- **Edlib** — sequence alignment library
+  [https://github.com/Martinsos/edlib](https://github.com/Martinsos/edlib)
 
-## Kit Tree Diagram
+### Use Docker
 
+We also provide a Docker image **`bootstrap_readout_v1.0`** encapsulating the experimental software environment.
+
+#### **Docker Environment Summary**
+
+| Environment / Software | Version            |
+| ---------------------- | ------------------ |
+| Operating system       | Ubuntu 18.04.6 LTS |
+| gcc                    | 7.5.0              |
+| g++                    | 7.5.0              |
+| Edlib                  | 1.2.6              |
+| Velvet                 | 1.2.09             |
+| ART                    | 2.5.8              |
+
+
+We provide a shell script to create and enter the container for recovery experiments.
+
+```bash
+cd Docker_image
+./run_docker.sh
 ```
-├── fast_recovery_BW/                             # Fast recovery
-│   ├── Illumina_R0.25/
-│   ├── Illumina_R0.5/
-│   ├── Illumina_R0.67/
-│   ├── Illumina_R0.83/
-│   ├── ONT_R0.25/
-│   └── ONT_R0.67/
-│       ├── src/
-│       ├── bin/
-│       ├── configure/
-│       ├── sequencing_data/
-│       ├── build.sh
-│       └── recover.sh
 
-├── bootstrap_recovery_TypeIReads_FBA/            # Bootstrap recovery with Type-I Reads only
-│   ├── Illumina_R0.25/
-│   ├── Illumina_R0.5/
-│   ├── Illumina_R0.67/
-│   ├── Illumina_R0.83/
-│   ├── ONT_R0.25/
-│   └── ONT_R0.67/
-│       ├── src/
-│       ├── bin/
-│       ├── configure/
-│       ├── sequencing_data/
-│       ├── build.sh
-│       └── recover.sh
-
-├── bootstrap_recovery_TypeI+IIReads_FBA/         # Bootstrap recovery with Type-I + Type-II Reads
-│   ├── Illumina_R0.25/
-│   ├── Illumina_R0.5/
-│   ├── Illumina_R0.67/
-│   ├── Illumina_R0.83/
-│   ├── ONT_R0.25/
-│   └── ONT_R0.67/
-│       ├── src/
-│       ├── bin/
-│       ├── configure/
-│       ├── sequencing_data/
-│       ├── build.sh
-│       └── recover.sh
-
-├── bootstrap_recovery_TypeI+II+IIIReads_FBA/     # Bootstrap recovery with Type-I + II + III Reads
-│   ├── Illumina_R0.25/
-│   ├── Illumina_R0.5/
-│   ├── Illumina_R0.67/
-│   ├── Illumina_R0.83/
-│   ├── ONT_R0.25/
-│   └── ONT_R0.67/
-│       ├── src/
-│       ├── bin/
-│       ├── configure/
-│       ├── sequencing_data/
-│       ├── build.sh
-│       └── recover.sh
-
-```
+---
 
 ## Example of usage
 
-### 1. Fast recovery (Illumina, R = 2/3)
+### 1. Fast Recovery  
+
+Fast recovery was performed on Illumina sequencing data (`DNA-40.5Kb-EM-SE150.fastq`), corresponding to Figure 3B.
 
 **Command:**
 
 ```bash
-cd ./fast_recovery_BW/Illumina_R0.67/
+cd ./Recovery_code/Figure3/R0.67/
 ./build.sh
 ./recover.sh
 ```
@@ -161,17 +127,21 @@ Fast recovery workflows for both Illumina (R = 1/4, 1/2, 5/6) and ONT (R = 1/4, 
 
 ---
 
-### 2. Bootstrap recovery with Type-I Reads only (ONT, R = 2/3)
+### 2. Bootstrap recovery
+
+Bootstrap recovery was performed on ONT sequencing data (`DNA-40.5Kb-EM-ONT-1.fastq`), corresponding to Figure 5E.
 
 **Command:**
 
 ```bash
-cd ./bootstrap_recovery_TypeIReads_FBA/ONT_R0.67/
+cd ./Figure5/bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.67/
 ./build.sh
 ./recover.sh
 ```
 
-#### [Step 0] Read segmentation (only used for ONT sequencing data)
+#### Stage 1. Recovery with Type-I Reads
+
+##### [Step 0] Read segmentation (only used for ONT sequencing data)
 
 **Input files:**
 
@@ -182,7 +152,7 @@ cd ./bootstrap_recovery_TypeIReads_FBA/ONT_R0.67/
 
 - `DNA-40.5Kb-EM-ONT-1-segment.fastq` – segmented ONT reads
 
-#### [Step 1] Sliding correlation
+##### [Step 1] Sliding correlation
 
 **Input files:**
 
@@ -195,7 +165,7 @@ cd ./bootstrap_recovery_TypeIReads_FBA/ONT_R0.67/
 - `TypeI_reads.txt` – high-correlation reads with no indels or indels near the ends
 - `lowthres_reads.txt` – low-correlation reads that typically carried internal indel errors
 
-#### [Step 2] Forward-backward algorithm (FBA)
+##### [Step 2] Forward-backward algorithm (FBA)
 
 **Input files:**
 
@@ -206,7 +176,7 @@ cd ./bootstrap_recovery_TypeIReads_FBA/ONT_R0.67/
 
 - `symbol_probability.txt` – indel-corrected symbol probability (from Type-I reads)
 
-#### [Step 3] Consensus soft information generation
+##### [Step 3] Consensus soft information generation
 
 **Input files:**
 
@@ -217,7 +187,7 @@ cd ./bootstrap_recovery_TypeIReads_FBA/ONT_R0.67/
 
 - `soft_info.txt` – consensus soft information (from Type-I reads)
 
-#### [Step 4] Soft-decision LDPC decoding
+##### [Step 4] Soft-decision LDPC decoding
 
 **Input files:**
 
@@ -231,21 +201,9 @@ cd ./bootstrap_recovery_TypeIReads_FBA/ONT_R0.67/
 
 ---
 
-### 3. Bootstrap recovery with Type-I + II Reads (ONT, R = 2/3)
+#### Stage 2. Recovery with Type-I+II Reads
 
-**Command:**
-
-```bash
-cd ./bootstrap_recovery_TypeI+IIReads_FBA/ONT_R0.67/
-./build.sh
-./recover.sh
-```
-
-#### Stage 1: *(see above)*
-
-#### Stage 2:
-
-#### [Step 1–2] Scaffold reference generation and filtering Type-II reads
+##### [Step 1–2] Scaffold reference generation and filtering Type-II reads
 
 **Input files:**
 
@@ -257,7 +215,7 @@ cd ./bootstrap_recovery_TypeI+IIReads_FBA/ONT_R0.67/
 - `TypeII_reads.txt` – Type-II reads that typically carried internal indel errors
 - `scaffold_unaligned_reads.txt` – residual reads not aligned to the scaffold
 
-#### [Step 3–5] FBA, consensus, and decoding
+##### [Step 3–5] FBA, consensus, and decoding
 
 **Input files:**
 
@@ -272,21 +230,9 @@ cd ./bootstrap_recovery_TypeI+IIReads_FBA/ONT_R0.67/
 
 ---
 
-### 4. Bootstrap recovery with Type-I + II + III Reads (ONT, R = 2/3)
+#### Stage 3. Recovery with Type-I+II+III Reads
 
-**Command:**
-
-```bash
-cd ./bootstrap_recovery_TypeI+II+IIIReads_FBA/ONT_R0.67/
-./build.sh
-./recover.sh
-```
-
-#### Stage 1 and Stage 2: *(see above)*
-
-#### Stage 3:
-
-#### [Step 1–2] Regenerative reference generation and filtering Type-III reads
+##### [Step 1–2] Regenerative reference generation and filtering Type-III reads
 
 **Input files:**
 
@@ -298,7 +244,7 @@ cd ./bootstrap_recovery_TypeI+II+IIIReads_FBA/ONT_R0.67/
 
 - `TypeIII_reads.txt` – reads typically aligned to gap regions, identified during the final recovery stage
 
-#### [Step 3–5] FBA, consensus, and decoding
+##### [Step 3–5] FBA, consensus, and decoding
 
 **Input files:**
 
@@ -327,7 +273,11 @@ This file contains seven columns:
 
 Bootstrap recovery workflow for both Illumina (R = 1/4, 1/2, 2/3, 5/6) and ONT (R = 1/4) data are provided, following the same structure and usage as in this example.
 
+---
+
 ## Note
+
+LDPC encoder/decoder by Radford M. Neal [https://github.com/radfordneal/LDPC-codes](https://github.com/radfordneal/LDPC-codes).
 
 For comprehensive information on the coding scheme in this study, please refer to the following literature:
 

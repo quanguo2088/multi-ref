@@ -8,12 +8,13 @@
 - [Requirements](#requirements)
 - [Kit Tree Diagram](#kit-tree-diagram)
 - [Example of usage](#example-of-usage)
-  - [1. Fast recovery (R = 2/3)](#1-fast-recovery-r--23)
-  - [2. Bootstrap recovery with Type-I Reads only (R = 5/6)](#2-bootstrap-recovery-with-type-i-reads-only-r--56)
-  - [3. Bootstrap recovery with Type-I + II Reads (R = 5/6)](#3-bootstrap-recovery-with-type-i--ii-reads-r--56)
-  - [4. Bootstrap recovery with Type-I + II + III Reads (R = 5/6)](#4-bootstrap-recovery-with-type-i--ii--iii-reads-r--56)
+  - [1. Fast recovery (Illumina, R = 2/3)](#1-fast-recovery-illumina-r--23)
+  - [2. Bootstrap recovery with Type-I Reads only (ONT, R = 2/3)](#2-bootstrap-recovery-with-type-i-reads-only-ont-r--23)
+  - [3. Bootstrap recovery with Type-I + II Reads (ONT, R = 2/3)](#3-bootstrap-recovery-with-type-i--ii-reads-ont-r--23)
+  - [4. Bootstrap recovery with Type-I + II + III Reads (ONT, R = 2/3)](#4-bootstrap-recovery-with-type-i--ii--iii-reads-ont-r--23)
 - [Note](#note)
 - [License](#license)
+
 
 ## Overview
 
@@ -54,12 +55,12 @@ The following tools and dependencies are required:
 
 ```
 ├── fast_recovery_BW/                             # Fast recovery
-│   ├── R0.25_Illumina/
-│   ├── R0.25_ONT
-│   ├── R0.5_Illumina/
-│   ├── R0.67_Illumina/
-│   ├── R0.67_ONT/
-│   └── R0.83_Illumina/
+│   ├── Illumina_R0.25/
+│   ├── Illumina_R0.5/
+│   ├── Illumina_R0.67/
+│   ├── Illumina_R0.83/
+│   ├── ONT_R0.25/
+│   └── ONT_R0.67/
 │       ├── src/
 │       ├── bin/
 │       ├── configure/
@@ -68,12 +69,12 @@ The following tools and dependencies are required:
 │       └── recover.sh
 
 ├── bootstrap_recovery_TypeIReads_FBA/            # Bootstrap recovery with Type-I Reads only
-│   ├── R0.25_Illumina/
-│   ├── R0.25_ONT
-│   ├── R0.5_Illumina/
-│   ├── R0.67_Illumina/
-│   ├── R0.67_ONT/
-│   └── R0.83_Illumina/
+│   ├── Illumina_R0.25/
+│   ├── Illumina_R0.5/
+│   ├── Illumina_R0.67/
+│   ├── Illumina_R0.83/
+│   ├── ONT_R0.25/
+│   └── ONT_R0.67/
 │       ├── src/
 │       ├── bin/
 │       ├── configure/
@@ -82,12 +83,12 @@ The following tools and dependencies are required:
 │       └── recover.sh
 
 ├── bootstrap_recovery_TypeI+IIReads_FBA/         # Bootstrap recovery with Type-I + Type-II Reads
-│   ├── R0.25_Illumina/
-│   ├── R0.25_ONT
-│   ├── R0.5_Illumina/
-│   ├── R0.67_Illumina/
-│   ├── R0.67_ONT/
-│   └── R0.83_Illumina/
+│   ├── Illumina_R0.25/
+│   ├── Illumina_R0.5/
+│   ├── Illumina_R0.67/
+│   ├── Illumina_R0.83/
+│   ├── ONT_R0.25/
+│   └── ONT_R0.67/
 │       ├── src/
 │       ├── bin/
 │       ├── configure/
@@ -96,12 +97,12 @@ The following tools and dependencies are required:
 │       └── recover.sh
 
 ├── bootstrap_recovery_TypeI+II+IIIReads_FBA/     # Bootstrap recovery with Type-I + II + III Reads
-│   ├── R0.25_Illumina/
-│   ├── R0.25_ONT
-│   ├── R0.5_Illumina/
-│   ├── R0.67_Illumina/
-│   ├── R0.67_ONT/
-│   └── R0.83_Illumina/
+│   ├── Illumina_R0.25/
+│   ├── Illumina_R0.5/
+│   ├── Illumina_R0.67/
+│   ├── Illumina_R0.83/
+│   ├── ONT_R0.25/
+│   └── ONT_R0.67/
 │       ├── src/
 │       ├── bin/
 │       ├── configure/
@@ -113,12 +114,12 @@ The following tools and dependencies are required:
 
 ## Example of usage
 
-### 1. Fast recovery (R = 2/3)
+### 1. Fast recovery (Illumina, R = 2/3)
 
 **Command:**
 
 ```bash
-cd ./fast_recovery_BW/R0.67/
+cd ./fast_recovery_BW/Illumina_R0.67/
 ./build.sh
 ./recover.sh
 ```
@@ -156,26 +157,37 @@ cd ./fast_recovery_BW/R0.67/
 - `recovery_image.jpg` – reconstructed image
 - `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
 
-Fast recovery workflows for other code rates (R = 1/4, 1/2, and 5/6) are provided and follow the same structure and usage as the R = 2/3 example.
+Fast recovery workflows for both Illumina (R = 1/4, 1/2, 5/6) and ONT (R = 1/4, 2/3) data are provided, following the same structure and usage as in this example.
 
 ---
 
-### 2. Bootstrap recovery with Type-I Reads only (R = 5/6)
+### 2. Bootstrap recovery with Type-I Reads only (ONT, R = 2/3)
 
 **Command:**
 
 ```bash
-cd ./bootstrap_recovery_TypeIReads_FBA/R0.83/
+cd ./bootstrap_recovery_TypeIReads_FBA/ONT_R0.67/
 ./build.sh
 ./recover.sh
 ```
+
+#### [Step 0] Read segmentation (only used for ONT sequencing data)
+
+**Input files:**
+
+- `DNA-40.5Kb-EM-ONT-1.fastq` – ONT sequencing data with a raw error rate of 4.7%
+- `Target_length` – target fragment length (typically set to 150 in practice)
+
+**Output files:**
+
+- `DNA-40.5Kb-EM-ONT-1-segment.fastq` – segmented ONT reads
 
 #### [Step 1] Sliding correlation
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
-- `DNA-40.5Kb-MC-Sim-1.fastq` – simulated sequencing data with a raw error rate of 1.2% (including 0.6% indels)
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
+- `DNA-40.5Kb-EM-ONT-1-segment.fastq`  – segmented ONT reads from Step 0
 
 **Output files:**
 
@@ -187,7 +199,7 @@ cd ./bootstrap_recovery_TypeIReads_FBA/R0.83/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `TypeI_reads.txt` – high-correlation reads from Step 1
 
 **Output files:**
@@ -198,7 +210,7 @@ cd ./bootstrap_recovery_TypeIReads_FBA/R0.83/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `symbol_probability.txt` – indel-corrected symbol probability from Step 2
 
 **Output files:**
@@ -214,17 +226,17 @@ cd ./bootstrap_recovery_TypeIReads_FBA/R0.83/
 **Output files:**
 
 - `recovery_image.jpg` – reconstructed image
-- `recovery_bitstream.txt` – decoded binary stream (54,000 bits)
+- `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
 - `decodedCodeword.txt` – decoded full LDPC codeword including systematic and parity bits (64,800 bits)
 
 ---
 
-### 3. Bootstrap recovery with Type-I + II Reads (R = 5/6)
+### 3. Bootstrap recovery with Type-I + II Reads (ONT, R = 2/3)
 
 **Command:**
 
 ```bash
-cd ./bootstrap_recovery_TypeI+IIReads_FBA/R0.83/
+cd ./bootstrap_recovery_TypeI+IIReads_FBA/ONT_R0.67/
 ./build.sh
 ./recover.sh
 ```
@@ -249,23 +261,23 @@ cd ./bootstrap_recovery_TypeI+IIReads_FBA/R0.83/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `TypeII_reads.txt` – Type-II reads from Step 2
 
 **Output files:**
 
 - `recovery_image.jpg` – reconstructed image
-- `recovery_bitstream.txt` – decoded binary stream (54,000 bits)
+- `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
 - `decodedCodeword.txt` – decoded full LDPC codeword including systematic and parity bits (64,800 bits)
 
 ---
 
-### 4. Bootstrap recovery with Type-I + II + III Reads (R = 5/6)
+### 4. Bootstrap recovery with Type-I + II + III Reads (ONT, R = 2/3)
 
 **Command:**
 
 ```bash
-cd ./bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.83/
+cd ./bootstrap_recovery_TypeI+II+IIIReads_FBA/ONT_R0.67/
 ./build.sh
 ./recover.sh
 ```
@@ -278,7 +290,7 @@ cd ./bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.83/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `decodedCodeword.txt` – decoded codeword from Stage 2
 - `scaffold_unaligned_reads.txt` – residual reads not aligned to the scaffold from Stage 2
 
@@ -290,18 +302,18 @@ cd ./bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.83/
 
 **Input files:**
 
-- `SequenceL81000NoPeriodOnly2ndFILE` – known watermark sequence
+- `SequenceLengthALL_FILE001R0667` – known watermark sequence
 - `TypeIII_reads.txt` – Type-III reads from Step 1
 
 **Output files:**
 
 - `recovery_image.jpg` – reconstructed image
-- `recovery_bitstream.txt` – decoded binary stream (54,000 bits)
+- `recovery_bitstream.txt` – decoded binary stream (43,200 bits)
 - `decodedCodeword.txt` – decoded full LDPC codeword including systematic and parity bits (64,800 bits)
 
-In addition, each bootstrap recovery workflow logs summary statistics for every independent experiment in:
+Summary statistics for all independent experiments are saved in:
 
-`./bootstrap_recovery_TypeI+II+IIIReads_FBA/R0.83/results/recovery_status.txt`
+`./bootstrap_recovery_TypeI+II+IIIReads_FBA/ONT_R0.67/results/recovery_status.txt`
 
 This file contains seven columns:
 
@@ -313,7 +325,7 @@ This file contains seven columns:
 6. Number of Type-II reads
 7. Number of Type-III reads
 
-The bootstrap recovery workflow for other code rates (R = 1/4, 1/2, and 2/3) is provided and follows the same structure and usage as the R = 5/6 example.
+Bootstrap recovery workflow for both Illumina (R = 1/4, 1/2, 2/3, 5/6) and ONT (R = 1/4) data are provided, following the same structure and usage as in this example.
 
 ## Note
 
