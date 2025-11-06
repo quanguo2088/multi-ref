@@ -6,9 +6,9 @@
 
 - [Overview](#overview)
 - [Requirements](#requirements)
-- [Example of Usage](#example-of-usage)
-  - [1. Fast Recovery (Illumina, R = 2/3)](#1-fast-recovery-illumina-r--23)
-  - [2. Bootstrap Recovery with Type-I Reads Only (ONT, R = 2/3)](#2-bootstrap-recovery-with-type-i-reads-only-ont-r--23)
+- [Example of usage](#example-of-usage)
+  - [1. Fast Recovery](#1-fast-recovery)
+  - [2. Bootstrap recovery](#2-bootstrap-recovery)
 - [Note](#note)
 - [License](#license)
 
